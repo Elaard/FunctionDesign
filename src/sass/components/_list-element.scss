@@ -1,0 +1,8 @@
+.list-element {
+  margin-left: 15px;
+  &--draggable {
+    cursor: pointer;
+  }
+  &--non-draggable {
+  }
+}
