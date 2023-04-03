@@ -6,13 +6,13 @@ import { SchemeUtils } from '../Utils/SchemeUtils';
 interface SchemeContext {
   scheme: Scheme,
   addArgument: (value: SchemeItem) => void,
-  deleteArgument(deletedId: string): void
+  removeArgument(deletedId: string): void
 }
 
 const SchemeProvider = React.createContext<SchemeContext>({
   scheme: [],
   addArgument: () => null,
-  deleteArgument: () => null,
+  removeArgument: () => null,
 });
 
 SchemeProvider.displayName = 'SchemeContextProvider';
@@ -38,11 +38,11 @@ const SchemeContext = ({ children, providedSchema, onChange }: SchemeContextProp
     setScheme(providedSchema);
   }, [providedSchema]);
 
-  const addArgument = (value: SchemeItem) => {
+  function addArgument(value: SchemeItem) {
     setScheme((prev) => [...prev, { ...value, id: Math.random().toString() }]);
-  };
+  }
 
-  function deleteArgument(deletedId: string): void {
+  function removeArgument(deletedId: string): void {
     setScheme(SchemeUtils.removeItem(deletedId, scheme));
   }
 
@@ -50,7 +50,7 @@ const SchemeContext = ({ children, providedSchema, onChange }: SchemeContextProp
     value={{
       scheme,
       addArgument,
-      deleteArgument
+      removeArgument
     }}>
     {children}
   </SchemeProvider.Provider>;

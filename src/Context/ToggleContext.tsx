@@ -26,10 +26,10 @@ interface ToggleContextProps {
 const ToggleContext = ({ children }: ToggleContextProps) => {
   const [toggledId, setToggledId] = useState<string>('');
 
-  const { deleteArgument } = useSchemeContext();
+  const { removeArgument } = useSchemeContext();
 
   function deleteItems() {
-    deleteArgument(toggledId);
+    removeArgument(toggledId);
   }
 
   function toggleElement(argumentId: string) {

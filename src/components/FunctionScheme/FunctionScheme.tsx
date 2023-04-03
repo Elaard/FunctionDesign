@@ -9,10 +9,9 @@ import { useSchemeContext } from '../../Context/SchemeContext';
 interface FunctionSchemaProps {
   func: SchemeItem;
   args: Scheme;
-  scheme: Scheme;
 }
 
-export default function FunctionSchema({ scheme, func, args }: FunctionSchemaProps) {
+export default function FunctionSchema({ func, args }: FunctionSchemaProps) {
 
   const { addArgument } = useSchemeContext();
 
@@ -35,7 +34,7 @@ export default function FunctionSchema({ scheme, func, args }: FunctionSchemaPro
     <span>{func.name}</span>
     <div ref={drop} className='function-scheme__body'>
       <Bracket highlight={isOverCurrent} bracket={'('} />
-      <FunctionBody args={args} scheme={scheme} />
+      <FunctionBody args={args} />
       <Bracket highlight={isOverCurrent} bracket={')'} />
     </div>
   </div>;

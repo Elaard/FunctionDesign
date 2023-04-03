@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { SchemeItem, Scheme } from '../../Models/SchemeItem';
+import { SchemeItem } from '../../Models/SchemeItem';
 import FunctionSchemeContainer from '../FunctionScheme/FunctionSchemeContainer';
 import Separator from '../Separator/Separator';
 import ArgumentContainer from './ArgumentContainer';
@@ -9,10 +9,9 @@ interface ArgumentContainerProps {
   argument: SchemeItem;
   argsLength: number;
   argumentIndex: number;
-  scheme: Scheme;
 }
 
-export default function ArgumentFactory({ argument, scheme, argsLength, argumentIndex }: ArgumentContainerProps) {
+export default function ArgumentFactory({ argument, argsLength, argumentIndex }: ArgumentContainerProps) {
   const requireSeparator = argumentIndex + 1 !== argsLength;
 
   const getComponent = () => {
@@ -20,7 +19,7 @@ export default function ArgumentFactory({ argument, scheme, argsLength, argument
 
     switch (argument.type) {
       case 'Func':
-        component = <FunctionSchemeContainer functionId={argument.id} scheme={scheme} />;
+        component = <FunctionSchemeContainer functionId={argument.id} />;
         break;
       case 'Field':
         return <span>{argument.value}</span>;
