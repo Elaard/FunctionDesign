@@ -1,3 +1,7 @@
+import { ConfigItems } from './ConfigItems';
+import { Sources } from './Source';
+
 export interface Config {
-  functions: any;
+  parts: ConfigItems;
+  sources: Sources;
 }

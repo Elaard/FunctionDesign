@@ -17,10 +17,10 @@ export default function ArgumentFactory({ argument, argsLength, argumentIndex }:
     let component = null;
 
     switch (argument.type) {
-      case 'Func':
+      case 'func':
         component = <FunctionSchemeContainer functionId={argument.id} />;
         break;
-      case 'Field':
+      case 'field':
         return <span>{argument.value}</span>;
       default:
         component = <span>{argument.value}</span>;

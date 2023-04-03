@@ -4,5 +4,11 @@
   display: inline-block;
   &__body {
     display: inline-block;
+    &--drop-cursor {
+      cursor: move;
+    }
+    &--standard-cursor {
+      cursor: pointer;
+    }
   }
 }

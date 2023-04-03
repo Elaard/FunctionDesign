@@ -1,29 +1,26 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
+import { DragActionType } from '../../Models/DragActionType';
+import { ConfigItem } from '../../Models/ConfigItem';
+import { DragItem } from '../../Models/DragItem';
+import { CollectedProps } from '../../Models/CollectedProps';
 
 interface DraggableListElementProps {
-  title: string;
-  type: string;
-  value: string;
-  name: string;
+  item: ConfigItem;
 }
 
-export default function DraggableListElement({ title, type, value, name }: DraggableListElementProps) {
+export default function DraggableListElement({ item }: DraggableListElementProps) {
 
-  const [, dragRef] = useDrag(
+  const [, dragRef] = useDrag<DragItem, void, CollectedProps>(
     () => ({
-      type: 'test',
+      type: item.returnType,
       item: {
-        type,
-        value,
-        name
+        item,
+        actionType: DragActionType.Add
       },
-      collect: (monitor) => ({
-        opacity: monitor.isDragging() ? 0.5 : 1
-      })
     }),
-    []
+    [item]
   );
 
-  return <li ref={dragRef} className='list-element list-element--draggable'>{title}</li>;
+  return <li ref={dragRef} className='list-element list-element--draggable'>{item.name}</li>;
 }

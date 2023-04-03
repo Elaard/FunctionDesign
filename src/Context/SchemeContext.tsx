@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { Scheme, SchemeItem } from '../Models/SchemeItem';
 import { SchemeUtils } from '../Utils/SchemeUtils';
+import { Config } from '../Models/Config';
+import { v4 as uuidv4 } from 'uuid';
 
 interface SchemeContext {
   scheme: Scheme,
@@ -22,12 +24,13 @@ export function useSchemeContext() {
 }
 
 interface SchemeContextProps {
+  config: Config;
   onChange: (scheme: Scheme) => void;
   children: JSX.Element;
   providedSchema: Scheme;
 }
 
-const SchemeContext = ({ children, providedSchema, onChange }: SchemeContextProps) => {
+const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeContextProps) => {
   const [scheme, setScheme] = useState<Scheme>([]);
 
   useEffect(() => {
@@ -39,7 +42,7 @@ const SchemeContext = ({ children, providedSchema, onChange }: SchemeContextProp
   }, [providedSchema]);
 
   function addArgument(value: SchemeItem) {
-    setScheme((prev) => [...prev, { ...value, id: Math.random().toString() }]);
+    setScheme((prev) => [...prev, { ...value, id: uuidv4() }]);
   }
 
   function removeArgument(deletedId: string): void {

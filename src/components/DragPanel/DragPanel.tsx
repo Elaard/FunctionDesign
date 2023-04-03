@@ -1,24 +1,38 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import DraggableListElement from '../ListElement/DraggableListElement';
 import NestedDragList from '../NestedDragList/NestedDragList';
+import { Config } from '../../Models/Config';
 
-export default function DragPanel() {
+interface DragPanelProps {
+  config: Config;
+}
+
+export default function DragPanel({ config }: DragPanelProps) {
+
+  const items = useMemo(() => {
+    const configParts = config.parts;
+
+    const lists: JSX.Element[] = [];
+
+    for (const source in configParts) {
+      lists.push(
+        <NestedDragList title={config.sources[source].label} key={source}>
+          {
+            configParts[source].map((item) => <DraggableListElement key={item.id} item={item} />)
+          }
+        </NestedDragList>
+      );
+    }
+
+    return lists;
+
+  }, [config.parts, config.sources]);
+
   return (
     <div className="drag-panel" >
       <h2>Drag Panel List</h2>
       <ul>
-        <NestedDragList title={'Fields'} key={'Fields'} >
-          <DraggableListElement title={'Field1'} type={'Field'} value={'Field1'} name={'Field1'} />
-          <DraggableListElement title={'Field2'} type={'Field'} value={'Field2'} name={'Field2'} />
-          <NestedDragList title={'Lista'} key={'Lista'} >
-            <DraggableListElement title={'Col1'} key={'Col1'} type={'Field'} value={'Col1'} name={'Col1'} />
-            <DraggableListElement title={'Col2'} key={'Col2'} type={'Field'} value={'Col2'} name={'Col2'} />
-          </NestedDragList>
-        </NestedDragList>
-        <NestedDragList title={'Functions'} key={'Functions'} >
-          <DraggableListElement title={'SUM'} type={'Func'} value={'SUM'} name={'sum'} />
-          <DraggableListElement title={'DIVIDE'} type={'Func'} value={'DIVIDE'} name={'divide'} />
-        </NestedDragList>
+        {items}
       </ul>
     </div>
   );
