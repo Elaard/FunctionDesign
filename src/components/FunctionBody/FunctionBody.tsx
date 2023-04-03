@@ -1,7 +1,7 @@
 import React from 'react';
 import './FunctionBody.scss';
 import { SchemaItem, SchemaItems } from '../../Models/SchemaItem';
-import Argument from '../Argument/Argument';
+import ArgumentContainer from '../Argument/ArgumentContainer';
 
 interface FunctionBodyProps {
   args: SchemaItems;
@@ -15,7 +15,7 @@ export default function FunctionBody({ args, value, onChange }: FunctionBodyProp
 
   return (
     <ul className='function-body'>
-      {args.map((arg, index) => <Argument key={arg.id} value={value} onChange={onChange} argumentIndex={index} argument={arg} argsLength={argsLength} />)}
+      {args.map((arg, index) => <ArgumentContainer key={arg.id} value={value} onChange={onChange} argumentIndex={index} argument={arg} argsLength={argsLength} />)}
     </ul>
   );
 }

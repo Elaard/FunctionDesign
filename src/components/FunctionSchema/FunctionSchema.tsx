@@ -2,8 +2,7 @@ import React from 'react';
 import './FunctionSchema.scss';
 import { useDrop } from 'react-dnd';
 import { SchemaItem, SchemaItems } from '../../Models/SchemaItem';
-import LeftBracket from '../Bracket/LeftBracket';
-import RightBracket from '../Bracket/RightBracket';
+import Bracket from '../Bracket/Bracket';
 import FunctionBody from '../FunctionBody/FunctionBody';
 
 interface FunctionSchemaProps {
@@ -14,18 +13,26 @@ interface FunctionSchemaProps {
 }
 
 export default function FunctionSchema({ value, func, args, onChange }: FunctionSchemaProps) {
-  const [, drop] = useDrop(() => ({
+
+  const [collection, drop] = useDrop(() => ({
     accept: ['test'],
 
-    drop(item) {
-      onChange({ ...item as any, parentId: func.id });
+    drop(item, monitor) {
+      //to prevent event bubbling
+      if (monitor.isOver()) {
+        onChange({ ...item as any, parentId: func.id });
+      }
     },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      isOverCurrent: monitor.isOver({ shallow: true }),
+    }),
   }));
 
   return <div className='function-schema' ref={drop}>
     <span>{func.name}</span>
-    <LeftBracket />
+    <Bracket highlight={collection.isOverCurrent} bracket={'('} />
     <FunctionBody args={args} value={value} onChange={onChange} />
-    <RightBracket />
+    <Bracket highlight={collection.isOverCurrent} bracket={')'} />
   </div>;
 }

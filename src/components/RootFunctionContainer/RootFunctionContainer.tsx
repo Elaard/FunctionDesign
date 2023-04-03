@@ -43,7 +43,7 @@ export default function RootFunctionContainer() {
   const onChange = (value: SchemaItem) => {
     setSchema((prev) => [...prev, { ...value, id: Math.random().toString() }]);
   };
-  console.log(schema);
+
   return (
     <div className="root-function-container">
       <DndProvider backend={HTML5Backend}>
