@@ -1,0 +1,20 @@
+.argument-container {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+
+  &__actions {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    transition: all 0.2s ease;
+    &--hidden {
+      transform: translateY(0%);
+    }
+    &--visible {
+      display: inline-block;
+      transform: translateY(3rem);
+    }
+  }
+}

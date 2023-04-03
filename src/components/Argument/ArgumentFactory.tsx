@@ -3,17 +3,17 @@ import React from 'react';
 import { SchemaItem, SchemaItems } from '../../Models/SchemaItem';
 import FunctionSchemaContainer from '../FunctionSchema/FunctionSchemaContainer';
 import Separator from '../Separator/Separator';
-import Argument from './Argument';
+import ArgumentContainer from './ArgumentContainer';
 
 interface ArgumentContainerProps {
   argument: SchemaItem;
   argsLength: number;
   argumentIndex: number;
-  value: SchemaItems;
-  onChange: (value: SchemaItem) => void
+  schema: SchemaItems;
+  onChange: (schema: SchemaItem) => void
 }
 
-export default function ArgumentFactory({ argument, value, onChange, argsLength, argumentIndex }: ArgumentContainerProps) {
+export default function ArgumentFactory({ argument, schema, onChange, argsLength, argumentIndex }: ArgumentContainerProps) {
   const requireSeparator = argumentIndex + 1 !== argsLength;
 
   const getComponent = () => {
@@ -21,7 +21,7 @@ export default function ArgumentFactory({ argument, value, onChange, argsLength,
 
     switch (argument.type) {
       case 'Func':
-        component = <FunctionSchemaContainer functionId={argument.id} value={value} onChange={onChange} />;
+        component = <FunctionSchemaContainer functionId={argument.id} schema={schema} onChange={onChange} />;
         break;
       default:
         component = <span>{argument.value}</span>;
@@ -29,10 +29,10 @@ export default function ArgumentFactory({ argument, value, onChange, argsLength,
     return component;
   };
 
-  return <Argument id={argument.id}>
+  return <ArgumentContainer id={argument.id}>
     <>
       {getComponent()}
       {requireSeparator ? <Separator separator={','} /> : null}
     </>
-  </Argument>;
+  </ArgumentContainer>;
 }

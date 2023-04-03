@@ -3,16 +3,16 @@ import { SchemaItem, SchemaItems } from '../../Models/SchemaItem';
 import FunctionSchema from './FunctionSchema';
 
 interface FunctionSchemaContainerProps {
-  value: SchemaItems;
+  schema: SchemaItems;
   functionId: string;
   onChange: (value: SchemaItem) => void
 }
 
 
-export default function FunctionSchemaContainer({ value, functionId, onChange }: FunctionSchemaContainerProps) {
+export default function FunctionSchemaContainer({ schema, functionId, onChange }: FunctionSchemaContainerProps) {
 
-  const func = value.find((schema) => schema.type === 'Func' && schema?.id === functionId);
-  const args = value.filter((schema) => schema?.parentId === functionId);
+  const func = schema.find((arg) => arg.type === 'Func' && arg?.id === functionId);
+  const args = schema.filter((arg) => arg?.parentId === functionId);
 
-  return func ? <FunctionSchema value={value} func={func} args={args} onChange={onChange} /> : null;
+  return func ? <FunctionSchema schema={schema} func={func} args={args} onChange={onChange} /> : null;
 }

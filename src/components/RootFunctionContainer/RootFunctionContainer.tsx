@@ -49,7 +49,7 @@ export default function RootFunctionContainer() {
       <DndProvider backend={HTML5Backend}>
         <DragPanel />
         <div className="root-function">
-          <FunctionSchemaContainer functionId={'root'} value={schema} onChange={onChange} />
+          <FunctionSchemaContainer functionId={'root'} schema={schema} onChange={onChange} />
         </div>
       </DndProvider>
     </div>

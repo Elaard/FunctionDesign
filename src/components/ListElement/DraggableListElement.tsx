@@ -10,7 +10,7 @@ interface DraggableListElementProps {
 
 export default function DraggableListElement({ title, type, value, name }: DraggableListElementProps) {
 
-  const [{ opacity }, dragRef] = useDrag(
+  const [, dragRef] = useDrag(
     () => ({
       type: 'test',
       item: {

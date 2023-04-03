@@ -8,11 +8,11 @@ import FunctionBody from '../FunctionBody/FunctionBody';
 interface FunctionSchemaProps {
   func: SchemaItem;
   args: SchemaItems;
-  value: SchemaItems;
+  schema: SchemaItems;
   onChange: (value: SchemaItem) => void
 }
 
-export default function FunctionSchema({ value, func, args, onChange }: FunctionSchemaProps) {
+export default function FunctionSchema({ schema, func, args, onChange }: FunctionSchemaProps) {
 
   const [collection, drop] = useDrop(() => ({
     accept: ['test'],
@@ -29,10 +29,12 @@ export default function FunctionSchema({ value, func, args, onChange }: Function
     }),
   }));
 
-  return <div className='function-schema' ref={drop}>
+  return <div className='function-schema'>
     <span>{func.name}</span>
-    <Bracket highlight={collection.isOverCurrent} bracket={'('} />
-    <FunctionBody args={args} value={value} onChange={onChange} />
-    <Bracket highlight={collection.isOverCurrent} bracket={')'} />
+    <div ref={drop} className='function-schema__body'>
+      <Bracket highlight={collection.isOverCurrent} bracket={'('} />
+      <FunctionBody args={args} schema={schema} onChange={onChange} />
+      <Bracket highlight={collection.isOverCurrent} bracket={')'} />
+    </div>
   </div>;
 }

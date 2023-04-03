@@ -6,5 +6,5 @@ interface SeparatorProps {
 }
 
 export default function Separator({ separator }: SeparatorProps) {
-  return <span className='separator separator--coma'>{separator}</span>;
+  return <span className='separator'>{separator}</span>;
 }
