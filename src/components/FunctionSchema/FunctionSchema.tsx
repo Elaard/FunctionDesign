@@ -4,15 +4,17 @@ import { useDrop } from 'react-dnd';
 import { SchemaItem, Schema } from '../../Models/SchemaItem';
 import Bracket from '../Bracket/Bracket';
 import FunctionBody from '../FunctionBody/FunctionBody';
+import { useSchemaContext } from '../../Context/SchemaContext';
 
 interface FunctionSchemaProps {
   func: SchemaItem;
   args: Schema;
   schema: Schema;
-  onChange: (value: SchemaItem) => void
 }
 
-export default function FunctionSchema({ schema, func, args, onChange }: FunctionSchemaProps) {
+export default function FunctionSchema({ schema, func, args }: FunctionSchemaProps) {
+
+  const { addArgument } = useSchemaContext();
 
   const [{ isOverCurrent }, drop] = useDrop(() => ({
     accept: ['test'],
@@ -20,7 +22,7 @@ export default function FunctionSchema({ schema, func, args, onChange }: Functio
     drop(item, monitor) {
       //to prevent event bubbling
       if (monitor.isOver()) {
-        onChange({ ...item as any, parentId: func.id });
+        addArgument({ ...item as any, parentId: func.id });
       }
     },
     collect: (monitor) => ({
@@ -33,7 +35,7 @@ export default function FunctionSchema({ schema, func, args, onChange }: Functio
     <span>{func.name}</span>
     <div ref={drop} className='function-schema__body'>
       <Bracket highlight={isOverCurrent} bracket={'('} />
-      <FunctionBody args={args} schema={schema} onChange={onChange} />
+      <FunctionBody args={args} schema={schema} />
       <Bracket highlight={isOverCurrent} bracket={')'} />
     </div>
   </div>;

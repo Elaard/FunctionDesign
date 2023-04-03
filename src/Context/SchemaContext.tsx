@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
-import { ToggleItem } from '../Models/SelectedArguments';
 import { Schema, SchemaItem } from '../Models/SchemaItem';
 
 interface SchemaContext {
   schema: Schema,
-  onChange: (value: SchemaItem) => void,
-  deleteToggled(toggled: ToggleItem): void
+  addArgument: (value: SchemaItem) => void,
+  deleteToggled(toggledId: string): void
 }
 
 const SchemaProvider = React.createContext<SchemaContext>({
   schema: [],
-  onChange: () => null,
+  addArgument: () => null,
   deleteToggled: () => null,
 });
 
@@ -22,30 +21,35 @@ export function useSchemaContext() {
 }
 
 interface SchemaContextProps {
+  onChange: (schema: Schema) => void;
   children: JSX.Element;
   providedSchema: Schema;
 }
 
-const SchemaContext = ({ children, providedSchema }: SchemaContextProps) => {
+const SchemaContext = ({ children, providedSchema, onChange }: SchemaContextProps) => {
   const [schema, setSchema] = useState<Schema>([]);
+
+  useEffect(() => {
+    onChange(schema);
+  }, [onChange, schema]);
 
   useEffect(() => {
     setSchema(providedSchema);
   }, [providedSchema]);
 
-  const onChange = (value: SchemaItem) => {
+  const addArgument = (value: SchemaItem) => {
     setSchema((prev) => [...prev, { ...value, id: Math.random().toString() }]);
   };
 
-  function deleteToggled(toggled: ToggleItem): void {
-    const cleared = schema.filter(({ id }) => !toggled[id]);
+  function deleteToggled(toggledId: string): void {
+    const cleared = schema.filter(({ id }) => id !== toggledId);
     setSchema(cleared);
   }
 
   return <SchemaProvider.Provider
     value={{
       schema,
-      onChange,
+      addArgument,
       deleteToggled
     }}>
     {children}

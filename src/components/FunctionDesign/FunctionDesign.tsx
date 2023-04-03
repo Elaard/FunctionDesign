@@ -10,11 +10,12 @@ import { Schema } from '../../Models/SchemaItem';
 
 interface FunctionDesignProps {
   schema: Schema;
+  onChange: (schema: Schema) => void;
 }
 
-export default function FunctionDesign({ schema }: FunctionDesignProps) {
+export default function FunctionDesign({ schema, onChange }: FunctionDesignProps) {
   return (
-    <SchemaContext providedSchema={schema}>
+    <SchemaContext providedSchema={schema} onChange={onChange}>
       <ToggleContext>
         <div className="root-function-container">
           <DndProvider backend={HTML5Backend}>

@@ -10,10 +10,9 @@ interface ArgumentContainerProps {
   argsLength: number;
   argumentIndex: number;
   schema: Schema;
-  onChange: (schema: SchemaItem) => void
 }
 
-export default function ArgumentFactory({ argument, schema, onChange, argsLength, argumentIndex }: ArgumentContainerProps) {
+export default function ArgumentFactory({ argument, schema, argsLength, argumentIndex }: ArgumentContainerProps) {
   const requireSeparator = argumentIndex + 1 !== argsLength;
 
   const getComponent = () => {
@@ -21,7 +20,7 @@ export default function ArgumentFactory({ argument, schema, onChange, argsLength
 
     switch (argument.type) {
       case 'Func':
-        component = <FunctionSchemaContainer functionId={argument.id} schema={schema} onChange={onChange} />;
+        component = <FunctionSchemaContainer functionId={argument.id} schema={schema} />;
         break;
       case 'Field':
         return <span>{argument.value}</span>;

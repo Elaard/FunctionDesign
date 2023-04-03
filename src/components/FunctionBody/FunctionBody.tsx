@@ -6,16 +6,15 @@ import ArgumentFactory from '../Argument/ArgumentFactory';
 interface FunctionBodyProps {
   args: Schema;
   schema: Schema;
-  onChange: (value: SchemaItem) => void
 }
 
-export default function FunctionBody({ args, schema, onChange }: FunctionBodyProps) {
+export default function FunctionBody({ args, schema }: FunctionBodyProps) {
 
   const argsLength = args.length;
 
   return (
     <ul className='function-body'>
-      {args.map((arg, index) => <ArgumentFactory key={arg.id} schema={schema} onChange={onChange} argumentIndex={index} argument={arg} argsLength={argsLength} />)}
+      {args.map((arg, index) => <ArgumentFactory key={arg.id} schema={schema} argumentIndex={index} argument={arg} argsLength={argsLength} />)}
     </ul>
   );
 }

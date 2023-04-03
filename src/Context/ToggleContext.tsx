@@ -1,14 +1,15 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { useContext } from 'react';
-import { ToggleItem } from '../Models/SelectedArguments';
 import { useKeyPress } from '../Hooks/useKeyPress';
 import { useSchemaContext } from './SchemaContext';
 
 interface ToggleContext {
-  toggleElement: (id: string, value: boolean) => void;
+  isToggled: (argumentId: string) => boolean;
+  toggleElement: (id: string) => void;
 }
 
 const ToggleProvider = React.createContext<ToggleContext>({
+  isToggled: () => false,
   toggleElement: () => null
 });
 
@@ -23,23 +24,27 @@ interface ToggleContextProps {
 }
 
 const ToggleContext = ({ children }: ToggleContextProps) => {
-
-  const toggleRef = useRef<ToggleItem>({});
+  const [toggledId, setToggledId] = useState<string>('');
 
   const { deleteToggled } = useSchemaContext();
 
   function deleteItems() {
-    deleteToggled(toggleRef.current);
+    deleteToggled(toggledId);
   }
 
-  function toggleElement(argumentId: string, value: boolean) {
-    toggleRef.current[argumentId] = value;
+  function toggleElement(argumentId: string) {
+    setToggledId(argumentId);
+  }
+
+  function isToggled(argumentId: string) {
+    return toggledId === argumentId;
   }
 
   useKeyPress('Delete', deleteItems);
 
   return <ToggleProvider.Provider
     value={{
+      isToggled,
       toggleElement,
     }}>
     {children}
