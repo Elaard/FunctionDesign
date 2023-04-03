@@ -2,11 +2,11 @@ import React from 'react';
 
 interface ArgumentProps {
   id: string;
-  argument: React.ReactElement;
+  children: React.ReactElement;
 }
 
-export default function Argument({ id, argument }: ArgumentProps) {
+export default function Argument({ id, children }: ArgumentProps) {
   return <li key={id + 'key'} style={{ 'display': 'inline-block' }}>
-    {argument}
+    {children}
   </li>;
 }

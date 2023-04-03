@@ -3,6 +3,7 @@ import React from 'react';
 import { SchemaItem, SchemaItems } from '../../Models/SchemaItem';
 import FunctionSchemaContainer from '../FunctionSchema/FunctionSchemaContainer';
 import Separator from '../Separator/Separator';
+import Argument from './Argument';
 
 interface ArgumentContainerProps {
   argument: SchemaItem;
@@ -12,7 +13,7 @@ interface ArgumentContainerProps {
   onChange: (value: SchemaItem) => void
 }
 
-export default function ArgumentContainer({ argument, value, onChange, argsLength, argumentIndex }: ArgumentContainerProps) {
+export default function ArgumentFactory({ argument, value, onChange, argsLength, argumentIndex }: ArgumentContainerProps) {
   const requireSeparator = argumentIndex + 1 !== argsLength;
 
   const getComponent = () => {
@@ -25,11 +26,13 @@ export default function ArgumentContainer({ argument, value, onChange, argsLengt
       default:
         component = <span>{argument.value}</span>;
     }
-    return <span>{component}</span>;
+    return component;
   };
 
-  return <>
-    {getComponent()}
-    {requireSeparator ? <Separator separator={','} /> : null}
-  </>;
+  return <Argument id={argument.id}>
+    <>
+      {getComponent()}
+      {requireSeparator ? <Separator separator={','} /> : null}
+    </>
+  </Argument>;
 }
