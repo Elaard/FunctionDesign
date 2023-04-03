@@ -1,14 +1,14 @@
 import React from 'react';
 import './FunctionSchema.scss';
 import { useDrop } from 'react-dnd';
-import { SchemaItem, SchemaItems } from '../../Models/SchemaItem';
+import { SchemaItem, Schema } from '../../Models/SchemaItem';
 import Bracket from '../Bracket/Bracket';
 import FunctionBody from '../FunctionBody/FunctionBody';
 
 interface FunctionSchemaProps {
   func: SchemaItem;
-  args: SchemaItems;
-  schema: SchemaItems;
+  args: Schema;
+  schema: Schema;
   onChange: (value: SchemaItem) => void
 }
 

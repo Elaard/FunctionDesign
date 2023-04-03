@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { SchemaItem, SchemaItems } from '../../Models/SchemaItem';
+import { SchemaItem, Schema } from '../../Models/SchemaItem';
 import FunctionSchemaContainer from '../FunctionSchema/FunctionSchemaContainer';
 import Separator from '../Separator/Separator';
 import ArgumentContainer from './ArgumentContainer';
@@ -9,7 +9,7 @@ interface ArgumentContainerProps {
   argument: SchemaItem;
   argsLength: number;
   argumentIndex: number;
-  schema: SchemaItems;
+  schema: Schema;
   onChange: (schema: SchemaItem) => void
 }
 

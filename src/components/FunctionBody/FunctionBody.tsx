@@ -1,11 +1,11 @@
 import React from 'react';
 import './FunctionBody.scss';
-import { SchemaItem, SchemaItems } from '../../Models/SchemaItem';
+import { SchemaItem, Schema } from '../../Models/SchemaItem';
 import ArgumentFactory from '../Argument/ArgumentFactory';
 
 interface FunctionBodyProps {
-  args: SchemaItems;
-  schema: SchemaItems;
+  args: Schema;
+  schema: Schema;
   onChange: (value: SchemaItem) => void
 }
 

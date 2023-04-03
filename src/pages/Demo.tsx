@@ -1,8 +1,8 @@
 import React from 'react';
-import RootFunctionContainer from '../components/RootFunctionContainer/RootFunctionContainer';
+import FunctionDesign from '../components/FunctionDesign/FunctionDesign';
 
 const Demo = () => {
-  return <RootFunctionContainer />;
+  return <FunctionDesign />;
 };
 
 export default Demo;

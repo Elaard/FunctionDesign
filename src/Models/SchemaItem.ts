@@ -7,4 +7,4 @@ export interface SchemaItem {
   returnType: string;
 }
 
-export type SchemaItems = SchemaItem[];
+export type Schema = SchemaItem[];

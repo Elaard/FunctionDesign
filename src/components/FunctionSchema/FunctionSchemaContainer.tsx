@@ -1,9 +1,9 @@
 import React from 'react';
-import { SchemaItem, SchemaItems } from '../../Models/SchemaItem';
+import { SchemaItem, Schema } from '../../Models/SchemaItem';
 import FunctionSchema from './FunctionSchema';
 
 interface FunctionSchemaContainerProps {
-  schema: SchemaItems;
+  schema: Schema;
   functionId: string;
   onChange: (value: SchemaItem) => void
 }
