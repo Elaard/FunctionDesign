@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './RootFunctionContainer.scss';
 import DragPanel from '../DragPanel/DragPanel';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { SchemaItem, SchemaItems } from '../../Models/SchemaItem';
 import FunctionSchemaContainer from '../FunctionSchema/FunctionSchemaContainer';
+import ToggleContext from '../../Context/ToggleContext';
+import { ToggleItem } from '../../Models/SelectedArguments';
 
 const basicSchema: SchemaItems = [
   {
@@ -25,7 +27,7 @@ const basicSchema: SchemaItems = [
   },
   {
     id: '123123as3',
-    type: 'value',
+    type: 'Field',
     name: 'VALUE',
     value: 'Field500',
     parentId: 'root',
@@ -44,14 +46,21 @@ export default function RootFunctionContainer() {
     setSchema((prev) => [...prev, { ...value, id: Math.random().toString() }]);
   };
 
+  const deleteItems = (items: ToggleItem) => {
+    const clearedSchema = schema.filter(({ id }) => !items[id]);
+    setSchema(clearedSchema);
+  };
+
   return (
-    <div className="root-function-container">
-      <DndProvider backend={HTML5Backend}>
-        <DragPanel />
-        <div className="root-function">
-          <FunctionSchemaContainer functionId={'root'} schema={schema} onChange={onChange} />
-        </div>
-      </DndProvider>
-    </div>
+    <ToggleContext deleteItems={deleteItems}>
+      <div className="root-function-container">
+        <DndProvider backend={HTML5Backend}>
+          <DragPanel />
+          <div className="root-function">
+            <FunctionSchemaContainer functionId={'root'} schema={schema} onChange={onChange} />
+          </div>
+        </DndProvider>
+      </div>
+    </ToggleContext>
   );
 }

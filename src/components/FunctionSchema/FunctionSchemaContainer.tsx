@@ -11,7 +11,7 @@ interface FunctionSchemaContainerProps {
 
 export default function FunctionSchemaContainer({ schema, functionId, onChange }: FunctionSchemaContainerProps) {
 
-  const func = schema.find((arg) => arg.type === 'Func' && arg?.id === functionId);
+  const func = schema.find((arg) => arg?.id === functionId);
   const args = schema.filter((arg) => arg?.parentId === functionId);
 
   return func ? <FunctionSchema schema={schema} func={func} args={args} onChange={onChange} /> : null;

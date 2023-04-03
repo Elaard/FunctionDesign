@@ -14,7 +14,7 @@ interface FunctionSchemaProps {
 
 export default function FunctionSchema({ schema, func, args, onChange }: FunctionSchemaProps) {
 
-  const [collection, drop] = useDrop(() => ({
+  const [{ isOverCurrent }, drop] = useDrop(() => ({
     accept: ['test'],
 
     drop(item, monitor) {
@@ -32,9 +32,9 @@ export default function FunctionSchema({ schema, func, args, onChange }: Functio
   return <div className='function-schema'>
     <span>{func.name}</span>
     <div ref={drop} className='function-schema__body'>
-      <Bracket highlight={collection.isOverCurrent} bracket={'('} />
+      <Bracket highlight={isOverCurrent} bracket={'('} />
       <FunctionBody args={args} schema={schema} onChange={onChange} />
-      <Bracket highlight={collection.isOverCurrent} bracket={')'} />
+      <Bracket highlight={isOverCurrent} bracket={')'} />
     </div>
   </div>;
 }

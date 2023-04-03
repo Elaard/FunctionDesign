@@ -23,6 +23,8 @@ export default function ArgumentFactory({ argument, schema, onChange, argsLength
       case 'Func':
         component = <FunctionSchemaContainer functionId={argument.id} schema={schema} onChange={onChange} />;
         break;
+      case 'Field':
+        return <span>{argument.value}</span>;
       default:
         component = <span>{argument.value}</span>;
     }

@@ -3,18 +3,27 @@
   position: relative;
   cursor: pointer;
 
+  &--border-visible {
+    border: 3px solid green;
+  }
+
+  &--border-not-visible {
+    border: 3px solid transparent;
+  }
+
   &__actions {
     position: absolute;
     top: 0;
     left: 0;
-    display: none;
+    width: 100%;
     transition: all 0.2s ease;
     &--hidden {
-      transform: translateY(0%);
+      opacity: 0%;
+      transform: translateX(0%);
     }
     &--visible {
-      display: inline-block;
-      transform: translateY(3rem);
+      opacity: 100%;
+      transform: translateX(-3rem);
     }
   }
 }
