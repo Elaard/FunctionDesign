@@ -12,11 +12,11 @@ export default function ArgumentContainer({ id, children }: ArgumentProps) {
 
   const [toggle, setToggle] = useToggle();
 
-  const { toggleRef } = useToggleContext();
+  const { toggleElement } = useToggleContext();
 
   useEffect(() => {
-    toggleRef.current[id] = toggle;
-  }, [id, toggleRef, toggle]);
+    toggleElement(id, toggle);
+  }, [id, toggle, toggleElement]);
 
   function toggleOnCurrentElement(event: React.MouseEvent<HTMLLIElement, MouseEvent>) {
     event.stopPropagation();

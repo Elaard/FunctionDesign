@@ -5,13 +5,11 @@ import { useKeyPress } from '../Hooks/useKeyPress';
 import { useSchemaContext } from './SchemaContext';
 
 interface ToggleContext {
-  toggleRef: React.MutableRefObject<ToggleItem>;
+  toggleElement: (id: string, value: boolean) => void;
 }
 
 const ToggleProvider = React.createContext<ToggleContext>({
-  toggleRef: {
-    current: {}
-  },
+  toggleElement: () => null
 });
 
 ToggleProvider.displayName = 'ToggleContextProvider';
@@ -34,11 +32,15 @@ const ToggleContext = ({ children }: ToggleContextProps) => {
     deleteToggled(toggleRef.current);
   }
 
+  function toggleElement(argumentId: string, value: boolean) {
+    toggleRef.current[argumentId] = value;
+  }
+
   useKeyPress('Delete', deleteItems);
 
   return <ToggleProvider.Provider
     value={{
-      toggleRef,
+      toggleElement,
     }}>
     {children}
   </ToggleProvider.Provider>;

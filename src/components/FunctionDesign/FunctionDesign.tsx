@@ -6,10 +6,15 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import ToggleContext from '../../Context/ToggleContext';
 import SchemaContext from '../../Context/SchemaContext';
 import RootFunction from '../RootFunction/RootFunction';
+import { Schema } from '../../Models/SchemaItem';
 
-export default function FunctionDesign() {
+interface FunctionDesignProps {
+  schema: Schema;
+}
+
+export default function FunctionDesign({ schema }: FunctionDesignProps) {
   return (
-    <SchemaContext>
+    <SchemaContext providedSchema={schema}>
       <ToggleContext>
         <div className="root-function-container">
           <DndProvider backend={HTML5Backend}>

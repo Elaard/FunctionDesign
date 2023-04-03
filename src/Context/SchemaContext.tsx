@@ -1,18 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { ToggleItem } from '../Models/SelectedArguments';
 import { Schema, SchemaItem } from '../Models/SchemaItem';
-
-const basicSchema: Schema = [
-  {
-    id: 'root',
-    type: 'Func',
-    name: 'sum',
-    value: 'SUM',
-    parentId: null,
-    returnType: 'number'
-  },
-];
 
 interface SchemaContext {
   schema: Schema,
@@ -34,14 +23,15 @@ export function useSchemaContext() {
 
 interface SchemaContextProps {
   children: JSX.Element;
+  providedSchema: Schema;
 }
 
-const SchemaContext = ({ children }: SchemaContextProps) => {
+const SchemaContext = ({ children, providedSchema }: SchemaContextProps) => {
   const [schema, setSchema] = useState<Schema>([]);
 
   useEffect(() => {
-    setSchema(basicSchema);
-  }, []);
+    setSchema(providedSchema);
+  }, [providedSchema]);
 
   const onChange = (value: SchemaItem) => {
     setSchema((prev) => [...prev, { ...value, id: Math.random().toString() }]);
