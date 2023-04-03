@@ -1,4 +1,4 @@
-export interface SchemaItem {
+export interface SchemeItem {
   id: string;
   name: string;
   value: any;
@@ -7,4 +7,4 @@ export interface SchemaItem {
   returnType: string;
 }
 
-export type Schema = SchemaItem[];
+export type Scheme = SchemeItem[];

@@ -1,18 +1,18 @@
 
 import React from 'react';
-import { SchemaItem, Schema } from '../../Models/SchemaItem';
-import FunctionSchemaContainer from '../FunctionSchema/FunctionSchemaContainer';
+import { SchemeItem, Scheme } from '../../Models/SchemeItem';
+import FunctionSchemeContainer from '../FunctionScheme/FunctionSchemeContainer';
 import Separator from '../Separator/Separator';
 import ArgumentContainer from './ArgumentContainer';
 
 interface ArgumentContainerProps {
-  argument: SchemaItem;
+  argument: SchemeItem;
   argsLength: number;
   argumentIndex: number;
-  schema: Schema;
+  scheme: Scheme;
 }
 
-export default function ArgumentFactory({ argument, schema, argsLength, argumentIndex }: ArgumentContainerProps) {
+export default function ArgumentFactory({ argument, scheme, argsLength, argumentIndex }: ArgumentContainerProps) {
   const requireSeparator = argumentIndex + 1 !== argsLength;
 
   const getComponent = () => {
@@ -20,7 +20,7 @@ export default function ArgumentFactory({ argument, schema, argsLength, argument
 
     switch (argument.type) {
       case 'Func':
-        component = <FunctionSchemaContainer functionId={argument.id} schema={schema} />;
+        component = <FunctionSchemeContainer functionId={argument.id} scheme={scheme} />;
         break;
       case 'Field':
         return <span>{argument.value}</span>;

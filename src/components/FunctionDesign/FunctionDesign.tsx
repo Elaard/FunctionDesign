@@ -4,18 +4,18 @@ import DragPanel from '../DragPanel/DragPanel';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import ToggleContext from '../../Context/ToggleContext';
-import SchemaContext from '../../Context/SchemaContext';
+import SchemeContext from '../../Context/SchemeContext';
 import RootFunction from '../RootFunction/RootFunction';
-import { Schema } from '../../Models/SchemaItem';
+import { Scheme } from '../../Models/SchemeItem';
 
 interface FunctionDesignProps {
-  schema: Schema;
-  onChange: (schema: Schema) => void;
+  scheme: Scheme;
+  onChange: (scheme: Scheme) => void;
 }
 
-export default function FunctionDesign({ schema, onChange }: FunctionDesignProps) {
+export default function FunctionDesign({ scheme, onChange }: FunctionDesignProps) {
   return (
-    <SchemaContext providedSchema={schema} onChange={onChange}>
+    <SchemeContext providedSchema={scheme} onChange={onChange}>
       <ToggleContext>
         <div className="root-function-container">
           <DndProvider backend={HTML5Backend}>
@@ -24,6 +24,6 @@ export default function FunctionDesign({ schema, onChange }: FunctionDesignProps
           </DndProvider>
         </div>
       </ToggleContext>
-    </SchemaContext>
+    </SchemeContext>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useContext } from 'react';
 import { useKeyPress } from '../Hooks/useKeyPress';
-import { useSchemaContext } from './SchemaContext';
+import { useSchemeContext } from './SchemeContext';
 
 interface ToggleContext {
   isToggled: (argumentId: string) => boolean;
@@ -26,10 +26,10 @@ interface ToggleContextProps {
 const ToggleContext = ({ children }: ToggleContextProps) => {
   const [toggledId, setToggledId] = useState<string>('');
 
-  const { deleteToggled } = useSchemaContext();
+  const { deleteArgument } = useSchemeContext();
 
   function deleteItems() {
-    deleteToggled(toggledId);
+    deleteArgument(toggledId);
   }
 
   function toggleElement(argumentId: string) {

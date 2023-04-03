@@ -1,20 +1,20 @@
 import React from 'react';
-import './FunctionSchema.scss';
+import './FunctionScheme.scss';
 import { useDrop } from 'react-dnd';
-import { SchemaItem, Schema } from '../../Models/SchemaItem';
+import { SchemeItem, Scheme } from '../../Models/SchemeItem';
 import Bracket from '../Bracket/Bracket';
 import FunctionBody from '../FunctionBody/FunctionBody';
-import { useSchemaContext } from '../../Context/SchemaContext';
+import { useSchemeContext } from '../../Context/SchemeContext';
 
 interface FunctionSchemaProps {
-  func: SchemaItem;
-  args: Schema;
-  schema: Schema;
+  func: SchemeItem;
+  args: Scheme;
+  scheme: Scheme;
 }
 
-export default function FunctionSchema({ schema, func, args }: FunctionSchemaProps) {
+export default function FunctionSchema({ scheme, func, args }: FunctionSchemaProps) {
 
-  const { addArgument } = useSchemaContext();
+  const { addArgument } = useSchemeContext();
 
   const [{ isOverCurrent }, drop] = useDrop(() => ({
     accept: ['test'],
@@ -31,11 +31,11 @@ export default function FunctionSchema({ schema, func, args }: FunctionSchemaPro
     }),
   }));
 
-  return <div className='function-schema'>
+  return <div className='function-scheme'>
     <span>{func.name}</span>
-    <div ref={drop} className='function-schema__body'>
+    <div ref={drop} className='function-scheme__body'>
       <Bracket highlight={isOverCurrent} bracket={'('} />
-      <FunctionBody args={args} schema={schema} />
+      <FunctionBody args={args} scheme={scheme} />
       <Bracket highlight={isOverCurrent} bracket={')'} />
     </div>
   </div>;

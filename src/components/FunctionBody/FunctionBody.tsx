@@ -1,20 +1,20 @@
 import React from 'react';
 import './FunctionBody.scss';
-import { SchemaItem, Schema } from '../../Models/SchemaItem';
+import { SchemeItem, Scheme } from '../../Models/SchemeItem';
 import ArgumentFactory from '../Argument/ArgumentFactory';
 
 interface FunctionBodyProps {
-  args: Schema;
-  schema: Schema;
+  args: Scheme;
+  scheme: Scheme;
 }
 
-export default function FunctionBody({ args, schema }: FunctionBodyProps) {
+export default function FunctionBody({ args, scheme }: FunctionBodyProps) {
 
   const argsLength = args.length;
 
   return (
     <ul className='function-body'>
-      {args.map((arg, index) => <ArgumentFactory key={arg.id} schema={schema} argumentIndex={index} argument={arg} argsLength={argsLength} />)}
+      {args.map((arg, index) => <ArgumentFactory key={arg.id} scheme={scheme} argumentIndex={index} argument={arg} argsLength={argsLength} />)}
     </ul>
   );
 }

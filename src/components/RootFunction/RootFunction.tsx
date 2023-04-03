@@ -1,10 +1,10 @@
 import React from 'react';
-import FunctionSchemaContainer from '../FunctionSchema/FunctionSchemaContainer';
-import { useSchemaContext } from '../../Context/SchemaContext';
+import FunctionSchemeContainer from '../FunctionScheme/FunctionSchemeContainer';
+import { useSchemeContext } from '../../Context/SchemeContext';
 
 export default function RootFunction() {
-  const { schema } = useSchemaContext();
+  const { scheme } = useSchemeContext();
   return <div className="root-function">
-    <FunctionSchemaContainer functionId={'root'} schema={schema} />
+    <FunctionSchemeContainer functionId={'root'} scheme={scheme} />
   </div>;
 }

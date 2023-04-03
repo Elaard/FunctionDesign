@@ -1,8 +1,8 @@
 import React from 'react';
 import FunctionDesign from '../components/FunctionDesign/FunctionDesign';
-import { Schema } from '../Models/SchemaItem';
+import { Scheme } from '../Models/SchemeItem';
 
-const basic: Schema = [
+const basic: Scheme = [
   {
     id: 'root',
     type: 'Func',
@@ -14,10 +14,10 @@ const basic: Schema = [
 ];
 
 const Demo = () => {
-  const onChange = (schema: Schema) => {
-    console.log(schema);
+  const onChange = (scheme: Scheme) => {
+    console.log(scheme);
   };
-  return <FunctionDesign schema={basic} onChange={onChange} />;
+  return <FunctionDesign scheme={basic} onChange={onChange} />;
 };
 
 export default Demo;
