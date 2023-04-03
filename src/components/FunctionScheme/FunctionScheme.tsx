@@ -11,7 +11,7 @@ interface FunctionSchemaProps {
   args: Scheme;
 }
 
-export default function FunctionSchema({ func, args }: FunctionSchemaProps) {
+export default function FunctionScheme({ func, args }: FunctionSchemaProps) {
 
   const { addArgument } = useSchemeContext();
 

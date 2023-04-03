@@ -2,7 +2,6 @@
 import React from 'react';
 import { SchemeItem } from '../../Models/SchemeItem';
 import FunctionSchemeContainer from '../FunctionScheme/FunctionSchemeContainer';
-import Separator from '../Separator/Separator';
 import ArgumentContainer from './ArgumentContainer';
 
 interface ArgumentContainerProps {
@@ -29,10 +28,5 @@ export default function ArgumentFactory({ argument, argsLength, argumentIndex }:
     return component;
   };
 
-  return <ArgumentContainer id={argument.id}>
-    <>
-      {getComponent()}
-      {requireSeparator ? <Separator separator={','} /> : null}
-    </>
-  </ArgumentContainer>;
+  return <ArgumentContainer id={argument.id} requireSeparator={requireSeparator} argument={getComponent()} />;
 }

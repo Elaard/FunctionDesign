@@ -1,13 +1,15 @@
 import React from 'react';
 import './ArgumentContainer.scss';
 import { useToggleContext } from '../../Context/ToggleContext';
+import Separator from '../Separator/Separator';
 
 interface ArgumentProps {
   id: string;
-  children: React.ReactElement;
+  argument: React.ReactElement;
+  requireSeparator: boolean;
 }
 
-export default function ArgumentContainer({ id, children }: ArgumentProps) {
+export default function ArgumentContainer({ id, requireSeparator, argument }: ArgumentProps) {
 
   const { toggleElement, isToggled } = useToggleContext();
 
@@ -16,10 +18,13 @@ export default function ArgumentContainer({ id, children }: ArgumentProps) {
     toggleElement(id);
   }
 
-  return <li
-    key={id + '_argument'}
-    className={`argument-container argument-container--${isToggled(id) ? 'border-visible' : 'border-not-visible'}`}
-    onClick={toggle} tabIndex={0} >
-    {children}
-  </li>;
+  return <>
+    <li
+      key={id + '_argument'}
+      className={`argument-container argument-container--${isToggled(id) ? 'border-visible' : 'border-not-visible'}`}
+      onClick={toggle} tabIndex={0} >
+      {argument}
+    </li>
+    {requireSeparator ? <Separator separator={','} /> : null}
+  </>;
 }

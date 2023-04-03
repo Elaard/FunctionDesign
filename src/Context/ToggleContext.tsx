@@ -28,8 +28,11 @@ const ToggleContext = ({ children }: ToggleContextProps) => {
 
   const { removeArgument } = useSchemeContext();
 
-  function deleteItems() {
-    removeArgument(toggledId);
+  function removeItem() {
+    if (toggledId) {
+      removeArgument(toggledId);
+      setToggledId('');
+    }
   }
 
   function toggleElement(argumentId: string) {
@@ -40,7 +43,7 @@ const ToggleContext = ({ children }: ToggleContextProps) => {
     return toggledId === argumentId;
   }
 
-  useKeyPress('Delete', deleteItems);
+  useKeyPress('Delete', removeItem);
 
   return <ToggleProvider.Provider
     value={{
