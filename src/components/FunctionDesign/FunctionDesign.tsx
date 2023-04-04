@@ -19,7 +19,7 @@ export default function FunctionDesign({ scheme, config, onChange }: FunctionDes
   return (
     <SchemeContext config={config} providedSchema={scheme} onChange={onChange} >
       <ToggleContext>
-        <div className="root-function-container">
+        <div className="function-design">
           <DndProvider backend={HTML5Backend}>
             <DragPanel config={config} />
             <RootFunction />

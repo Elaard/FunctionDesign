@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import DraggableListElement from '../ListElement/DraggableListElement';
 import NestedDragList from '../NestedDragList/NestedDragList';
 import { Config } from '../../Models/Config';
+import './DragPanel.scss';
 
 interface DragPanelProps {
   config: Config;
