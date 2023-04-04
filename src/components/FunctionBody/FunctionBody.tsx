@@ -13,7 +13,7 @@ export default function FunctionBody({ args }: FunctionBodyProps) {
 
   return (
     <ul className='function-body'>
-      {args.map((arg, index) => <ArgumentFactory key={arg.id} argumentIndex={index} argument={arg} argsLength={argsLength} />)}
+      {args.map((arg, index) => <ArgumentFactory key={arg.argId} argumentIndex={index} argument={arg} argsLength={argsLength} />)}
     </ul>
   );
 }

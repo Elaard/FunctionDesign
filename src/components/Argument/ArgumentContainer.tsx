@@ -2,38 +2,34 @@ import React from 'react';
 import './ArgumentContainer.scss';
 import { useToggleContext } from '../../Context/ToggleContext';
 import Separator from '../Separator/Separator';
-import { useDrag, useDrop } from 'react-dnd';
+import { useDrop } from 'react-dnd';
+import { SchemeItem } from '../../Models/SchemeItem';
+import { DragItem } from '../../Models/DragItem';
+import { CollectedProps } from '../../Models/CollectedProps';
+import { DragActionType } from '../../Models/DragActionType';
+import { useSchemeContext } from '../../Context/SchemeContext';
 
 interface ArgumentProps {
-  id: string;
-  argument: React.ReactElement;
+  argument: SchemeItem;
+  renderedArgument: React.ReactElement;
   requireSeparator: boolean;
 }
 
-export default function ArgumentContainer({ id, requireSeparator, argument }: ArgumentProps) {
+export default function ArgumentContainer({ requireSeparator, argument, renderedArgument }: ArgumentProps) {
 
+  const { replaceArgument } = useSchemeContext();
   const { toggleElement, isToggled } = useToggleContext();
 
-  const [, dragRef] = useDrag(
-    () => ({
-      type: 'test',
-      item: {
-        isNew: false,
-      },
-      collect: (monitor) => ({
-        opacity: monitor.isDragging() ? 0.5 : 1
-      })
-    }),
-    []
-  );
 
-  const [{ isOverCurrent }, drop] = useDrop(() => ({
-    accept: ['test'],
+  const [{ isOverCurrent }, drop] = useDrop<DragItem, void, CollectedProps>(() => ({
+    accept: ['number'],
 
     drop(item, monitor) {
       //to prevent event bubbling
       if (monitor.isOver()) {
-        // addArgument({ ...item as any });
+        if (item.actionType === DragActionType.Add) {
+          replaceArgument(item.item, argument.argId);
+        }
       }
     },
     collect: (monitor) => ({
@@ -44,16 +40,19 @@ export default function ArgumentContainer({ id, requireSeparator, argument }: Ar
 
   function toggle(event: React.MouseEvent<HTMLLIElement, MouseEvent>) {
     event.stopPropagation();
-    toggleElement(id);
+    toggleElement(argument.argId);
   }
 
   return <>
     <li
-      key={id + '_argument'}
-      ref={dragRef}
-      className={`argument-container argument-container--${isToggled(id) ? 'border-visible' : 'border-not-visible'}`}
+      key={argument.argId + '_argument'}
+      ref={drop}
+      className={
+        `argument-container--${isOverCurrent ? 'border-underline-visible' : 'border-underline-not-visible'}
+         argument-container argument-container--${isToggled(argument.argId) ? 'border-visible' : 'border-not-visible'}`
+      }
       onClick={toggle} tabIndex={0} >
-      {argument}
+      {renderedArgument}
     </li>
     {requireSeparator ? <Separator separator={','} /> : null}
   </>;

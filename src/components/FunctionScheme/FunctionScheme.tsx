@@ -19,13 +19,13 @@ export default function FunctionScheme({ func, args }: FunctionSchemaProps) {
   const { addArgument } = useSchemeContext();
 
   const [{ isOverCurrent }, drop] = useDrop<DragItem, void, CollectedProps>(() => ({
-    accept: [func.returnType],
+    accept: [func.argumentType],
 
     drop(item, monitor) {
       //to prevent event bubbling
       if (monitor.isOver()) {
         if (item.actionType === DragActionType.Add) {
-          addArgument({ ...item.item, parentId: func.id });
+          addArgument({ ...item.item, parentId: func.argId as string });
         }
       }
     },

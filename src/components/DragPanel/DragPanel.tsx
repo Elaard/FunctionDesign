@@ -16,7 +16,7 @@ export default function DragPanel({ config }: DragPanelProps) {
 
     for (const source in configParts) {
       lists.push(
-        <NestedDragList title={config.sources[source].label} key={source}>
+        <NestedDragList title={config.settings.sources[source].label} key={source}>
           {
             configParts[source].map((item) => <DraggableListElement key={item.id} item={item} />)
           }
@@ -26,7 +26,7 @@ export default function DragPanel({ config }: DragPanelProps) {
 
     return lists;
 
-  }, [config.parts, config.sources]);
+  }, [config.parts, config.settings.sources]);
 
   return (
     <div className="drag-panel" >

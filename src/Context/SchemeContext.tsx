@@ -3,17 +3,21 @@ import { useContext } from 'react';
 import { Scheme, SchemeItem } from '../Models/SchemeItem';
 import { SchemeUtils } from '../Utils/SchemeUtils';
 import { Config } from '../Models/Config';
-import { v4 as uuidv4 } from 'uuid';
+import { BasicConfig } from '../Utils/Config';
 
 interface SchemeContext {
+  config: Config;
   scheme: Scheme,
-  addArgument: (value: SchemeItem) => void,
+  addArgument: (argument: SchemeItem) => void,
+  replaceArgument: (argument: SchemeItem, replacedId: string) => void,
   removeArgument(deletedId: string): void
 }
 
 const SchemeProvider = React.createContext<SchemeContext>({
+  config: { ...BasicConfig },
   scheme: [],
   addArgument: () => null,
+  replaceArgument: () => null,
   removeArgument: () => null,
 });
 
@@ -41,19 +45,27 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
     setScheme(providedSchema);
   }, [providedSchema]);
 
-  function addArgument(value: SchemeItem) {
-    setScheme((prev) => [...prev, { ...value, id: uuidv4() }]);
+  function addArgument(argument: SchemeItem): void {
+    setScheme((prev) => SchemeUtils.addArgument(argument, prev));
   }
 
   function removeArgument(deletedId: string): void {
-    setScheme(SchemeUtils.removeItem(deletedId, scheme));
+    setScheme((prev) => SchemeUtils.removeArgument(deletedId, prev));
   }
+
+  function replaceArgument(argument: SchemeItem, replacedId: string): void {
+    setScheme((prev) => SchemeUtils.replaceArgument(argument, prev, replacedId));
+  }
+
+  console.log(scheme);
 
   return <SchemeProvider.Provider
     value={{
+      config,
       scheme,
       addArgument,
-      removeArgument
+      removeArgument,
+      replaceArgument
     }}>
     {children}
   </SchemeProvider.Provider>;

@@ -1,6 +1,7 @@
-import { ConfigItem } from './ConfigItem';
+import { SimpleItem } from './SimpleItem';
 
-export interface SchemeItem extends ConfigItem {
+export interface SchemeItem extends SimpleItem {
+  argId?: string;
   parentId: string | null;
 }
 

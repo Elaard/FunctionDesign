@@ -16,9 +16,9 @@ export default function ArgumentFactory({ argument, argsLength, argumentIndex }:
   const getComponent = () => {
     let component = null;
 
-    switch (argument.type) {
+    switch (argument.itemType) {
       case 'func':
-        component = <FunctionSchemeContainer functionId={argument.id} />;
+        component = <FunctionSchemeContainer functionId={argument.argId as string} />;
         break;
       case 'field':
         return <span>{argument.value}</span>;
@@ -28,5 +28,5 @@ export default function ArgumentFactory({ argument, argsLength, argumentIndex }:
     return component;
   };
 
-  return <ArgumentContainer id={argument.id} requireSeparator={requireSeparator} argument={getComponent()} />;
+  return <ArgumentContainer renderedArgument={getComponent()} requireSeparator={requireSeparator} argument={argument} />;
 }

@@ -10,6 +10,12 @@
   &--border-not-visible {
     border: 3px solid transparent;
   }
+  &--border-underline-visible {
+    border-bottom: 3px solid green;
+  }
+  &--border-underline-not-visible {
+    border-bottom: 3px solid transparent;
+  }
 
   &__actions {
     position: absolute;
