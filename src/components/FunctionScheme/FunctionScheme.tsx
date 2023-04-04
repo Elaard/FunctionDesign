@@ -19,13 +19,13 @@ export default function FunctionScheme({ func, args }: FunctionSchemaProps) {
   const { addArgument } = useSchemeContext();
 
   const [{ isOverCurrent }, drop] = useDrop<DragItem, void, CollectedProps>(() => ({
-    accept: [func.argumentType],
+    accept: [func.type],
 
     drop(item, monitor) {
       //to prevent event bubbling
       if (monitor.isOver()) {
         if (item.actionType === DragActionType.Add) {
-          addArgument({ ...item.item, parentId: func.argId as string });
+          addArgument({ ...item.item }, func.argId);
         }
       }
     },
@@ -36,10 +36,10 @@ export default function FunctionScheme({ func, args }: FunctionSchemaProps) {
   }));
 
   return <div className='function-scheme'>
-    <span>{func.name}</span>
-    <div ref={drop} className={`function-scheme__body function-scheme__body--${isOverCurrent ? 'drop-cursor' : 'standard-cursor'}`}>
+    <div className={`function-scheme__body function-scheme__body--${isOverCurrent ? 'drop-cursor' : 'standard-cursor'}`}>
       <Bracket highlight={isOverCurrent} bracket={'('} />
       <FunctionBody args={args} />
+      <span ref={drop}>...</span>
       <Bracket highlight={isOverCurrent} bracket={')'} />
     </div>
   </div>;

@@ -1,7 +1,7 @@
 import { SimpleItem } from './SimpleItem';
 
 export interface FuncItemMetaSchemeArg {
-  argumentType: string;
+  type: string;
 }
 
 export interface FuncItemMetaScheme {

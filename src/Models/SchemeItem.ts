@@ -1,7 +1,7 @@
 import { SimpleItem } from './SimpleItem';
 
 export interface SchemeItem extends SimpleItem {
-  argId?: string;
+  argId: string;
   parentId: string | null;
 }
 

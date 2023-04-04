@@ -13,7 +13,7 @@ export default function DraggableListElement({ item }: DraggableListElementProps
 
   const [, dragRef] = useDrag<DragItem, void, CollectedProps>(
     () => ({
-      type: item.argumentType,
+      type: item.type,
       item: {
         item,
         actionType: DragActionType.Add

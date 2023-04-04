@@ -15,5 +15,8 @@ export default function FunctionSchemeContainer({ functionId }: FunctionSchemeCo
 
   const args = scheme.filter((arg) => arg?.parentId === functionId);
 
-  return func ? <FunctionScheme func={func} args={args} /> : null;
+  return func ? <>
+    <span>{func.name}</span>
+    <FunctionScheme func={func} args={args} />
+  </> : null;
 }

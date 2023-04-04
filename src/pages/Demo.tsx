@@ -6,12 +6,12 @@ import { Config } from '../Models/Config';
 const basic: Scheme = [
   {
     id: 'root',
-    itemType: 'func',
+    source: 'func',
     name: 'sum',
     value: 'SUM',
-    parentId: null,
-    argumentType: 'number',
-    argId: 'root'
+    type: 'number',
+    argId: 'root',
+    parentId: ''
   },
 ];
 
@@ -25,15 +25,15 @@ const Demo = () => {
       funcs: [
         {
           id: 'sum',
-          itemType: 'func',
+          source: 'func',
           name: 'Sum',
           value: 'sum',
-          argumentType: 'number',
+          type: 'number',
           meta: {
             scheme: {
               arguments: [
                 {
-                  argumentType: 'number'
+                  type: 'number'
                 }
               ],
               hasStrictScheme: false,
@@ -42,15 +42,15 @@ const Demo = () => {
         },
         {
           id: 'divide',
-          itemType: 'func',
+          source: 'func',
           name: 'Divide',
           value: 'divide',
-          argumentType: 'number',
+          type: 'number',
           meta: {
             scheme: {
               arguments: [
                 {
-                  argumentType: 'number'
+                  type: 'number'
                 }
               ],
               hasStrictScheme: false,
@@ -59,15 +59,15 @@ const Demo = () => {
         },
         {
           id: 'substract',
-          itemType: 'func',
+          source: 'func',
           name: 'Substract',
           value: 'substract',
-          argumentType: 'number',
+          type: 'number',
           meta: {
             scheme: {
               arguments: [
                 {
-                  argumentType: 'number'
+                  type: 'number'
                 }
               ],
               hasStrictScheme: false,
@@ -78,24 +78,24 @@ const Demo = () => {
       fields: [
         {
           id: 'Field1',
-          itemType: 'field',
+          source: 'field',
           name: 'Field1',
           value: 'Field1',
-          argumentType: 'number'
+          type: 'number'
         },
         {
           id: 'Field2',
-          itemType: 'field',
+          source: 'field',
           name: 'Field2',
           value: 'Field2',
-          argumentType: 'number'
+          type: 'number'
         },
         {
           id: 'Field3',
-          itemType: 'field',
+          source: 'field',
           name: 'Field3',
           value: 'Field3',
-          argumentType: 'number'
+          type: 'number'
         },
       ],
     },

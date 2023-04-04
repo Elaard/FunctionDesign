@@ -6,5 +6,5 @@ interface LeftBracketProps {
 }
 
 export default function Bracket({ highlight, bracket }: LeftBracketProps) {
-  return <span style={highlight ? { 'color': 'red' } : {}} >{bracket}</span>;
+  return <span style={highlight ? { 'color': 'green' } : {}} >{bracket}</span>;
 }
