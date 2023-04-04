@@ -5,8 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 export interface SchemeUtils {
   addArgument: (argument: ConfigItem, parentId: string, scheme: Scheme) => Scheme;
   removeArgument: (deletedId: string, scheme: Scheme) => Scheme;
+  updateArgument(argument: SchemeItem, updated: Partial<ConfigItem>, scheme: Scheme): Scheme;
   replaceArgument(argument: ConfigItem, scheme: Scheme, replacedId: string): Scheme;
-  removeInvalidArguments(invalidIds: string[], scheme: Scheme): SchemeItem[];
   getArgumentByArgId(scheme: Scheme, argId: string): SchemeItem | undefined;
 }
 
@@ -50,26 +50,51 @@ function recalculateSchemeByArgId(argumentId: string, scheme: Scheme): Scheme {
   return removeInvalidArguments(invalidIds, scheme);
 }
 
-function replaceArgument(argument: ConfigItem, scheme: Scheme, replacedArgumentId: string): Scheme {
-  let oldScheme = [...scheme];
-  const replacedArgument = getArgumentByArgId(scheme, replacedArgumentId);
-  if (replacedArgument) {
-    if (replacedArgument.type === 'func') {
-      oldScheme = recalculateSchemeByArgId(replacedArgument.argId, scheme);
+function requireRecalculation(argument: ConfigItem): boolean {
+  return argument?.source === 'func';
+}
+
+function copyScheme(scheme: Scheme): Scheme {
+  return [...scheme];
+}
+
+function updateSchemeOnMatchingArgId(scheme: Scheme, item: Partial<SchemeItem>, matchingId: string) {
+  return scheme.map((arg) => {
+    if (arg.argId === matchingId) {
+      return { ...arg, ...item };
     }
-  }
-  return oldScheme.map((oldArg) => {
-    if (oldArg.argId === replacedArgumentId) {
-      return { ...argument, argId: oldArg.argId, parentId: oldArg.parentId };
-    }
-    return oldArg;
+    return arg;
   });
+}
+
+function recalculateSchemeIfNecessary(scheme: Scheme, argument: SchemeItem) {
+  return requireRecalculation(argument) ? recalculateSchemeByArgId(argument.argId, scheme) : copyScheme(scheme);
+}
+
+function updateArgument(previous: SchemeItem, updated: Partial<ConfigItem>, scheme: Scheme): Scheme {
+  const validScheme = recalculateSchemeIfNecessary(scheme, previous);
+  return updateSchemeOnMatchingArgId(validScheme, updated, previous.argId);
+}
+
+function replaceArgument(argument: ConfigItem, scheme: Scheme, replacedArgumentId: string): Scheme {
+  const oldArgument = getArgumentByArgId(scheme, replacedArgumentId);
+
+  if (!oldArgument) {
+    return scheme;
+  }
+
+  if (argument.id === oldArgument.id) {
+    return scheme;
+  }
+
+  const validScheme = recalculateSchemeIfNecessary(scheme, oldArgument);
+  return updateSchemeOnMatchingArgId(validScheme, argument, replacedArgumentId);
 }
 
 export const SchemeUtils: SchemeUtils = {
   addArgument,
   removeArgument,
+  updateArgument,
   replaceArgument,
   getArgumentByArgId,
-  removeInvalidArguments,
 };

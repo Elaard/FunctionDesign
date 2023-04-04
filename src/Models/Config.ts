@@ -1,11 +1,17 @@
 import { ConfigItems } from './ConfigItems';
-import { Sources } from './Source';
+import { ConfigSources } from './ConfigSource';
+import { WidgetProps } from './WidgetProps';
 
 interface ConfigSettings {
-  sources: Sources;
+  sources: ConfigSources;
 }
 
+type ConfigTypes = {
+  [key: string]: React.FunctionComponent<WidgetProps>;
+};
+
 export interface Config {
+  types: ConfigTypes;
   parts: ConfigItems;
   settings: ConfigSettings;
 }

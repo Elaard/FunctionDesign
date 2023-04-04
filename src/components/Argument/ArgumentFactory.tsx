@@ -1,8 +1,12 @@
 
 import React from 'react';
 import { SchemeItem } from '../../Models/SchemeItem';
-import FunctionSchemeContainer from '../FunctionScheme/FunctionSchemeContainer';
 import ArgumentContainer from './ArgumentContainer';
+import { WidgetProps } from '../../Models/WidgetProps';
+import { useSchemeContext } from '../../Context/SchemeContext';
+import { ConnectDropTarget } from 'react-dnd';
+import WidgetFactory from '../Widgets/WidgetFactory';
+import { ConfigItem } from '../../Models/ConfigItems';
 
 interface ArgumentContainerProps {
   argument: SchemeItem;
@@ -13,20 +17,31 @@ interface ArgumentContainerProps {
 export default function ArgumentFactory({ argument, argsLength, argumentIndex }: ArgumentContainerProps) {
   const requireSeparator = argumentIndex + 1 !== argsLength;
 
-  const getComponent = () => {
-    let component = null;
+  const { getWidget, getItemsByType, updateArgument } = useSchemeContext();
 
-    switch (argument.source) {
-      case 'func':
-        component = <FunctionSchemeContainer functionId={argument.argId} />;
-        break;
-      case 'field':
-        return <span>{argument.value}</span>;
-      default:
-        component = <span>{argument.value}</span>;
-    }
-    return component;
+  function setValue(updated: Partial<ConfigItem>) {
+    updateArgument(updated, argument);
+  }
+
+  const getRenderWidgetFunction = () => {
+
+    const Widget: React.FunctionComponent<WidgetProps> = getWidget(argument.source);
+
+    const items = getItemsByType(argument.source, argument.type);
+
+    const renderWidget = function (onChange: (updated: string | number | boolean) => void) {
+      return <Widget onChange={onChange} items={items} value={argument} />;
+    };
+
+    return function renderWidgetFactory(dropRef: ConnectDropTarget) {
+      return <WidgetFactory
+        dropRef={dropRef}
+        setValue={setValue}
+        argument={argument}
+        renderWidget={renderWidget}
+      />;
+    };
   };
 
-  return <ArgumentContainer renderedArgument={getComponent()} requireSeparator={requireSeparator} argument={argument} />;
+  return <ArgumentContainer render={getRenderWidgetFunction()} requireSeparator={requireSeparator} argument={argument} />;
 }

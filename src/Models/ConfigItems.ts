@@ -5,6 +5,6 @@ import { SimpleItem } from './SimpleItem';
 export type ConfigItem = SimpleItem | FuncItem | FieldItem;
 
 export type ConfigItems = Record<string, SimpleItem[] | FuncItem[] | FieldItem[]> & {
-  funcs: FuncItem[];
-  fields: FieldItem[];
+  func: FuncItem[];
+  field: FieldItem[];
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import './ArgumentContainer.scss';
 import { useToggleContext } from '../../Context/ToggleContext';
 import Separator from '../Separator/Separator';
-import { useDrop } from 'react-dnd';
+import { ConnectDropTarget, useDrop } from 'react-dnd';
 import { SchemeItem } from '../../Models/SchemeItem';
 import { DragItem } from '../../Models/DragItem';
 import { CollectedProps } from '../../Models/CollectedProps';
@@ -10,12 +10,12 @@ import { DragActionType } from '../../Models/DragActionType';
 import { useSchemeContext } from '../../Context/SchemeContext';
 
 interface ArgumentProps {
+  render: (dropRef: ConnectDropTarget) => JSX.Element | null;
   argument: SchemeItem;
-  renderedArgument: React.ReactElement;
   requireSeparator: boolean;
 }
 
-export default function ArgumentContainer({ requireSeparator, argument, renderedArgument }: ArgumentProps) {
+export default function ArgumentContainer({ requireSeparator, argument, render }: ArgumentProps) {
 
   const { replaceArgument } = useSchemeContext();
   const { toggleElement, isToggled } = useToggleContext();
@@ -46,13 +46,12 @@ export default function ArgumentContainer({ requireSeparator, argument, rendered
   return <>
     <li
       key={argument.argId + '_argument'}
-      ref={drop}
       className={
         `argument-container--${isOverCurrent ? 'border-underline-visible' : 'border-underline-not-visible'}
          argument-container argument-container--${isToggled(argument.argId) ? 'border-visible' : 'border-not-visible'}`
       }
       onClick={toggle} tabIndex={0} >
-      {renderedArgument}
+      {render(drop)}
     </li>
     {requireSeparator ? <Separator separator={','} /> : null}
   </>;

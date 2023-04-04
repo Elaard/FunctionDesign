@@ -6,11 +6,13 @@ import { useSchemeContext } from './SchemeContext';
 interface ToggleContext {
   isToggled: (argumentId: string) => boolean;
   toggleElement: (id: string) => void;
+  clearToggled: () => void;
 }
 
 const ToggleProvider = React.createContext<ToggleContext>({
   isToggled: () => false,
-  toggleElement: () => null
+  toggleElement: () => null,
+  clearToggled: () => null
 });
 
 ToggleProvider.displayName = 'ToggleContextProvider';
@@ -28,11 +30,8 @@ const ToggleContext = ({ children }: ToggleContextProps) => {
 
   const { removeArgument } = useSchemeContext();
 
-  function removeItem() {
-    if (toggledId) {
-      removeArgument(toggledId);
-      setToggledId('');
-    }
+  function clearToggled() {
+    setToggledId('');
   }
 
   function toggleElement(argumentId: string) {
@@ -43,11 +42,19 @@ const ToggleContext = ({ children }: ToggleContextProps) => {
     return toggledId === argumentId;
   }
 
-  useKeyPress('Delete', removeItem);
+  function removeToggled() {
+    if (toggledId) {
+      removeArgument(toggledId);
+      clearToggled();
+    }
+  }
+
+  useKeyPress('Delete', removeToggled);
 
   return <ToggleProvider.Provider
     value={{
       isToggled,
+      clearToggled,
       toggleElement,
     }}>
     {children}

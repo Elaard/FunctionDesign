@@ -9,11 +9,11 @@ interface FunctionSchemeContainerProps {
 
 export default function FunctionSchemeContainer({ functionId }: FunctionSchemeContainerProps) {
 
-  const { scheme, config } = useSchemeContext();
+  const { getFunctionArguments, getArgumentByArgId } = useSchemeContext();
 
-  const func = scheme.find((arg) => arg?.argId === functionId);
+  const func = getArgumentByArgId(functionId);
 
-  const args = scheme.filter((arg) => arg?.parentId === functionId);
+  const args = getFunctionArguments(functionId);
 
   return func ? <>
     <span>{func.name}</span>

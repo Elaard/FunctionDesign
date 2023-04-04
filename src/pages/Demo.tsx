@@ -2,6 +2,7 @@ import React from 'react';
 import FunctionDesign from '../components/FunctionDesign/FunctionDesign';
 import { Scheme } from '../Models/SchemeItem';
 import { Config } from '../Models/Config';
+import { BasicConfig } from '../Utils/Config';
 
 const basic: Scheme = [
   {
@@ -21,8 +22,9 @@ const Demo = () => {
   };
 
   const config: Config = {
+    ...BasicConfig,
     parts: {
-      funcs: [
+      func: [
         {
           id: 'sum',
           source: 'func',
@@ -75,7 +77,7 @@ const Demo = () => {
           }
         },
       ],
-      fields: [
+      field: [
         {
           id: 'Field1',
           source: 'field',
@@ -101,10 +103,10 @@ const Demo = () => {
     },
     settings: {
       sources: {
-        funcs: {
+        func: {
           label: 'Functions',
         },
-        fields: {
+        field: {
           label: 'Fields'
         }
       }
