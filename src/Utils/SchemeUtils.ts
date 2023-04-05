@@ -8,6 +8,7 @@ export interface SchemeUtils {
   updateArgument(argument: SchemeItem, updated: Partial<ConfigItem>, scheme: Scheme): Scheme;
   replaceArgument(argument: ConfigItem, scheme: Scheme, replacedId: string): Scheme;
   getArgumentByArgId(scheme: Scheme, argId: string): SchemeItem | undefined;
+  addEmptyArgument(parentId: string, type: string, scheme: Scheme): Scheme;
 }
 
 function getArgsIdsBasedOnParentId(parentId: string, scheme: Scheme): string[] {
@@ -91,10 +92,15 @@ function replaceArgument(argument: ConfigItem, scheme: Scheme, replacedArgumentI
   return updateSchemeOnMatchingArgId(validScheme, argument, replacedArgumentId);
 }
 
+function addEmptyArgument(parentId: string, type: string, scheme: Scheme): Scheme {
+  return [...scheme, { parentId, source: 'value', type, argId: uuidv4(), id: '', name: '', value: '' }];
+}
+
 export const SchemeUtils: SchemeUtils = {
   addArgument,
   removeArgument,
   updateArgument,
   replaceArgument,
   getArgumentByArgId,
+  addEmptyArgument,
 };

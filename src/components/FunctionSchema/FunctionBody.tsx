@@ -19,7 +19,7 @@ export default function FunctionBody({ args }: FunctionSchemaProps) {
     <>
       {args.map((arg, index) => (
         <>
-          <WidgetFactory key={arg.argId} argument={arg} acceptedDropTypes={[arg.type]} />
+          <WidgetFactory key={arg.argId + '_arg'} argument={arg} acceptedDropTypes={[arg.type]} />
           {renderSeparator(index)}
         </>
       ))}

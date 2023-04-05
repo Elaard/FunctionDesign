@@ -19,7 +19,7 @@ export interface ValueWidgetProps {
 export interface WidgetProps {
   value: string;
   onChange: (value: string) => void;
-  items?: any[];
+  items?: ConfigItem[];
 }
 
 export interface WidgetPropsWithDrop {

@@ -9,10 +9,11 @@ import FunctionSchema from '../FunctionSchema/FunctionSchema';
 import './WidgetFactory.scss';
 import { useShallowDrop } from '../../Hooks/useShallowDrop';
 import { DragItem } from '../../Models/DragItem';
+import ValueWidgetContainer from './ValueWidgetContainer';
 
 export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: WidgetPropsWithDrop) {
   const { clearToggled, toggleElement, isToggled } = useToggleContext();
-  const { updateArgument, updateArgumentValue, getWidget, getItemsByType } = useSchemeContext();
+  const { updateArgument, updateArgumentValue, getWidget, getItemsByType, replaceArgument } = useSchemeContext();
 
   const { factory: Widget, formatDisplayedValue } = getWidget(argument.source);
 
@@ -28,20 +29,23 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
 
   useOutsideClick(clickRef, onOutsideClick);
 
-  const onDrop = (item: DragItem) => {};
+  const onDrop = (item: DragItem) => {
+    replaceArgument(item.item, argument.argId);
+  };
 
   const [, dropRef] = useShallowDrop(acceptedDropTypes, onDrop, canDrop);
 
-  const getRenderedWiget = () => {
+  const getRenderedWidget = () => {
     switch (argument.source) {
       case 'value':
         return (
-          <Widget
+          <ValueWidgetContainer
             value={argument.value}
             onChange={(value: string) => {
               updateArgumentValue(value, argument);
               clearToggled();
             }}
+            renderWidget={(onChange, value) => <Widget onChange={onChange} value={value} />}
           />
         );
       default:
@@ -61,7 +65,7 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
 
   const renderWidget = () => {
     if (showWidget) {
-      return getRenderedWiget();
+      return getRenderedWidget();
     }
   };
 
@@ -69,8 +73,8 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
     if (!showWidget) {
       const displayedValue = formatDisplayedValue ? formatDisplayedValue(argument) : argument?.value;
       return (
-        <span ref={dropRef} onClick={() => toggleElement(argument.argId)} hidden={showWidget}>
-          {displayedValue}
+        <span ref={dropRef} onClick={() => toggleElement(argument.argId)} hidden={showWidget} className="widget-factory__header">
+          {displayedValue !== '' ? displayedValue : '__'}
         </span>
       );
     }
@@ -83,7 +87,7 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
   };
 
   return (
-    <li ref={clickRef} className="widget-factory">
+    <li key={argument.argId + '_wf'} ref={clickRef} className="widget-factory">
       {renderHeader()}
       {renderWidget()}
       {renderSchema()}

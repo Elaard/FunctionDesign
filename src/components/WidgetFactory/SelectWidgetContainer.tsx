@@ -2,7 +2,6 @@ import React from 'react';
 import { SelectWidgetProps } from '../../Models/WidgetProps';
 
 export default function SelectWidgetContainer({ items, argument, onChange, Widget }: SelectWidgetProps) {
-
   function onSelect(selectedId: string) {
     const selected = items.find((item) => item?.id === selectedId);
     if (selected) {

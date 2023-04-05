@@ -1,7 +1,8 @@
 import { Config } from '../Models/Config';
-import Select from '../components/Widgets/Select';
+import VanillaInput from '../components/Vanilla/VanillaInput';
+import VanillaSelect from '../components/Vanilla/VanillaSelect';
 
-const format = (value: any) => value.name;
+const formatDisplayedValue = (value: any) => value.name;
 
 export const BasicConfig: Config = {
   parts: {
@@ -23,16 +24,16 @@ export const BasicConfig: Config = {
   },
   types: {
     func: {
-      factory: Select,
-      formatDisplayedValue: format,
+      factory: VanillaSelect,
+      formatDisplayedValue,
     },
     field: {
-      factory: Select,
-      formatDisplayedValue: format,
+      factory: VanillaSelect,
+      formatDisplayedValue,
     },
     number: {
-      factory: null as any,
-      formatDisplayedValue: format,
+      factory: VanillaInput,
+      formatDisplayedValue: (value) => value.value,
     },
   },
 };

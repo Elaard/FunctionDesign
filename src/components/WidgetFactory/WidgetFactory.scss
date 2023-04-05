@@ -1,3 +1,6 @@
 .widget-factory {
   display: inline-block;
+  &__header {
+    cursor: pointer;
+  }
 }

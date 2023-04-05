@@ -6,16 +6,17 @@ import { Config, Widget } from '../Models/Config';
 import { ConfigItem } from '../Models/ConfigItems';
 
 interface SchemeContext {
-  getWidget(source: string): Widget,
-  addArgument: (argument: ConfigItem, parentId: string) => void,
-  replaceArgument: (argument: ConfigItem, replacedId: string) => void,
-  removeArgument(deletedId: string): void,
-  getItemsByType(source: string, type: string): ConfigItem[],
-  updateArgument(updated: Partial<ConfigItem>, argument: SchemeItem): void,
-  updateArgumentValue(value: string, argument: SchemeItem): void,
-  getFunctionArguments(functionId: string): SchemeItem[],
-  getArgumentByArgId(argumentId: string): SchemeItem | undefined,
-  getAllTypes(): string[]
+  getWidget(source: string): Widget;
+  addArgument: (argument: ConfigItem, parentId: string) => void;
+  replaceArgument: (argument: ConfigItem, replacedId: string) => void;
+  removeArgument(deletedId: string): void;
+  getItemsByType(source: string, type: string): ConfigItem[];
+  updateArgument(updated: Partial<ConfigItem>, argument: SchemeItem): void;
+  updateArgumentValue(value: string, argument: SchemeItem): void;
+  getFunctionArguments(functionId: string): SchemeItem[];
+  getArgumentByArgId(argumentId: string): SchemeItem | undefined;
+  getAllTypes(): string[];
+  addEmptyArgument(parentId: string, type: string): void;
 }
 
 const SchemeProvider = React.createContext<SchemeContext>({
@@ -29,6 +30,7 @@ const SchemeProvider = React.createContext<SchemeContext>({
   getFunctionArguments: () => [],
   getArgumentByArgId: () => undefined,
   getAllTypes: () => [],
+  addEmptyArgument: () => null,
 });
 
 SchemeProvider.displayName = 'SchemeContextProvider';
@@ -100,22 +102,31 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
   function getAllTypes(): string[] {
     return [...new Set(config.parts.func.map((x) => x.type))];
   }
+  function addEmptyArgument(parentId: string, type: string): void {
+    setScheme((prev) => utils.addEmptyArgument(parentId, type, prev));
+  }
 
-  return <SchemeProvider.Provider
-    value={{
-      getWidget,
-      addArgument,
-      removeArgument,
-      updateArgument,
-      updateArgumentValue,
-      replaceArgument,
-      getItemsByType,
-      getFunctionArguments,
-      getArgumentByArgId,
-      getAllTypes
-    }}>
-    {children}
-  </SchemeProvider.Provider>;
+  console.log(scheme);
+
+  return (
+    <SchemeProvider.Provider
+      value={{
+        getWidget,
+        addArgument,
+        removeArgument,
+        updateArgument,
+        updateArgumentValue,
+        replaceArgument,
+        getItemsByType,
+        getFunctionArguments,
+        getArgumentByArgId,
+        getAllTypes,
+        addEmptyArgument,
+      }}
+    >
+      {children}
+    </SchemeProvider.Provider>
+  );
 };
 
 export default SchemeContext;

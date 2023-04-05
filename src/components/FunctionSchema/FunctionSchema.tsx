@@ -14,7 +14,7 @@ interface FunctionSchemaProps {
 }
 
 export default function FunctionSchema({ argument }: FunctionSchemaProps) {
-  const { getFunctionArguments, addArgument } = useSchemeContext();
+  const { getFunctionArguments, addArgument, addEmptyArgument } = useSchemeContext();
   const args = getFunctionArguments(argument.argId);
 
   const onDrop = (dropped: DragItem) => {
@@ -23,11 +23,15 @@ export default function FunctionSchema({ argument }: FunctionSchemaProps) {
 
   const [, dropRef] = useShallowDrop([argument.type], onDrop);
 
+  const createArgument = () => {
+    addEmptyArgument(argument.argId, argument.type);
+  };
+
   return (
     <ul className="function-schema">
       <Bracket highlight={false} bracket="(" />
       <FunctionBody args={args} />
-      <AddArgument dropRef={dropRef} />
+      <AddArgument dropRef={dropRef} onClick={createArgument} />
       <Bracket highlight={false} bracket=")" />
     </ul>
   );
