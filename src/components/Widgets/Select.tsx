@@ -1,14 +1,9 @@
 import React, { ChangeEvent } from 'react';
-import { ConfigItem } from '../../Models/ConfigItems';
+import { WidgetProps } from '../../Models/WidgetProps';
 import './Select.scss';
 
-interface SelectProps {
-  value: string;
-  items: ConfigItem[];
-  onChange: (selected: string) => void;
-}
 
-export default function Select({ items, value, onChange }: SelectProps) {
+export default function Select({ items, value, onChange }: WidgetProps) {
 
   function onSelect(event: ChangeEvent<HTMLSelectElement>) {
     onChange(event.target.value);
@@ -16,7 +11,7 @@ export default function Select({ items, value, onChange }: SelectProps) {
 
   return <select value={value} onChange={onSelect} className='select-widget'>
     {
-      items.map((item) => {
+      items && items.map((item) => {
         return <option key={item.id} value={item.id} >{item.name}</option>;
       })
     }

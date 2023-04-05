@@ -1,9 +1,11 @@
 import React from 'react';
-import FunctionSchemeContainer from '../FunctionScheme/FunctionSchemeContainer';
 import './RootFunction.scss';
+import { useSchemeContext } from '../../Context/SchemeContext';
+import WidgetFactory from '../WidgetFactory/WidgetFactory';
 
 export default function RootFunction() {
-  return <div className="root-function">
-    <FunctionSchemeContainer functionId={'root'} />
-  </div>;
+  const { getArgumentByArgId, getAllTypes } = useSchemeContext();
+
+  const argument = getArgumentByArgId('root');
+  return <ul className="root-function">{argument ? <WidgetFactory argument={argument} acceptedDropTypes={getAllTypes()} /> : null}</ul>;
 }

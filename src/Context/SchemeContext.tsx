@@ -2,19 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { Scheme, SchemeItem } from '../Models/SchemeItem';
 import { SchemeUtils as utils } from '../Utils/SchemeUtils';
-import { Config } from '../Models/Config';
+import { Config, Widget } from '../Models/Config';
 import { ConfigItem } from '../Models/ConfigItems';
-import { WidgetProps } from '../Models/WidgetProps';
 
 interface SchemeContext {
-  getWidget(source: string): React.FunctionComponent<WidgetProps>,
+  getWidget(source: string): Widget,
   addArgument: (argument: ConfigItem, parentId: string) => void,
   replaceArgument: (argument: ConfigItem, replacedId: string) => void,
   removeArgument(deletedId: string): void,
   getItemsByType(source: string, type: string): ConfigItem[],
   updateArgument(updated: Partial<ConfigItem>, argument: SchemeItem): void,
+  updateArgumentValue(value: string, argument: SchemeItem): void,
   getFunctionArguments(functionId: string): SchemeItem[],
-  getArgumentByArgId(argumentId: string): SchemeItem | undefined
+  getArgumentByArgId(argumentId: string): SchemeItem | undefined,
+  getAllTypes(): string[]
 }
 
 const SchemeProvider = React.createContext<SchemeContext>({
@@ -24,8 +25,10 @@ const SchemeProvider = React.createContext<SchemeContext>({
   removeArgument: () => null,
   getItemsByType: () => [],
   updateArgument: () => null,
+  updateArgumentValue: () => null,
   getFunctionArguments: () => [],
   getArgumentByArgId: () => undefined,
+  getAllTypes: () => [],
 });
 
 SchemeProvider.displayName = 'SchemeContextProvider';
@@ -68,7 +71,11 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
     setScheme((prev) => utils.updateArgument(argument, updated, prev));
   }
 
-  function getWidget(source: string): React.FunctionComponent<WidgetProps> {
+  function updateArgumentValue(value: string, argument: SchemeItem) {
+    setScheme((prev) => utils.updateArgument(argument, { value }, prev));
+  }
+
+  function getWidget(source: string): Widget {
     const widget = config.types[source];
 
     if (!widget) {
@@ -90,16 +97,22 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
     return scheme.find((argument) => argument?.argId === argumentId);
   }
 
+  function getAllTypes(): string[] {
+    return [...new Set(config.parts.func.map((x) => x.type))];
+  }
+
   return <SchemeProvider.Provider
     value={{
       getWidget,
       addArgument,
       removeArgument,
       updateArgument,
+      updateArgumentValue,
       replaceArgument,
       getItemsByType,
       getFunctionArguments,
       getArgumentByArgId,
+      getAllTypes
     }}>
     {children}
   </SchemeProvider.Provider>;

@@ -1,7 +1,7 @@
 import { Config } from '../Models/Config';
-import FieldWidget from '../components/Widgets/FieldWidget';
-import FuncWidget from '../components/Widgets/FuncWidget';
-import ValueFactoryWidget from '../components/Widgets/ValueFactoryWidget';
+import Select from '../components/Widgets/Select';
+
+const format = (value: any) => value.name;
 
 export const BasicConfig: Config = {
   parts: {
@@ -22,8 +22,17 @@ export const BasicConfig: Config = {
     },
   },
   types: {
-    func: FuncWidget,
-    field: FieldWidget,
-    number: ValueFactoryWidget,
+    func: {
+      factory: Select,
+      formatDisplayedValue: format,
+    },
+    field: {
+      factory: Select,
+      formatDisplayedValue: format,
+    },
+    number: {
+      factory: null as any,
+      formatDisplayedValue: format,
+    },
   },
 };
