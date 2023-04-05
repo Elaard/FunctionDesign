@@ -9,6 +9,7 @@ export interface SchemeUtils {
   replaceArgument(argument: ConfigItem, scheme: Scheme, replacedId: string): Scheme;
   getArgumentByArgId(scheme: Scheme, argId: string): SchemeItem | undefined;
   addEmptyArgument(parentId: string, type: string, scheme: Scheme): Scheme;
+  createArgument(argument: Partial<ConfigItem>, parentId: string): SchemeItem;
 }
 
 function getArgsIdsBasedOnParentId(parentId: string, scheme: Scheme): string[] {
@@ -42,8 +43,12 @@ function removeArgument(deletedId: string, scheme: Scheme): Scheme {
   return removeInvalidArguments(invalidIds, scheme);
 }
 
+function createArgument(argument: Partial<ConfigItem>, parentId: string): SchemeItem {
+  return { id: uuidv4(), name: '', value: '', source: 'value', type: 'value', ...argument, argId: uuidv4(), parentId };
+}
+
 function addArgument(argument: ConfigItem, parentId: string, scheme: Scheme): Scheme {
-  return [...scheme, { ...argument, argId: uuidv4(), parentId }];
+  return [...scheme, createArgument(argument, parentId)];
 }
 
 function recalculateSchemeByArgId(argumentId: string, scheme: Scheme): Scheme {
@@ -93,7 +98,7 @@ function replaceArgument(argument: ConfigItem, scheme: Scheme, replacedArgumentI
 }
 
 function addEmptyArgument(parentId: string, type: string, scheme: Scheme): Scheme {
-  return [...scheme, { parentId, source: 'value', type, argId: uuidv4(), id: '', name: '', value: '' }];
+  return [...scheme, createArgument({ source: 'value', type }, parentId)];
 }
 
 export const SchemeUtils: SchemeUtils = {
@@ -103,4 +108,5 @@ export const SchemeUtils: SchemeUtils = {
   replaceArgument,
   getArgumentByArgId,
   addEmptyArgument,
+  createArgument,
 };

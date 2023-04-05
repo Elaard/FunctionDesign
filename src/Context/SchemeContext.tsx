@@ -4,6 +4,7 @@ import { Scheme, SchemeItem } from '../Models/SchemeItem';
 import { SchemeUtils as utils } from '../Utils/SchemeUtils';
 import { Config, Widget } from '../Models/Config';
 import { ConfigItem } from '../Models/ConfigItems';
+import { FuncItem } from '../Models/FuncItem';
 
 interface SchemeContext {
   getWidget(source: string): Widget;
@@ -17,6 +18,7 @@ interface SchemeContext {
   getArgumentByArgId(argumentId: string): SchemeItem | undefined;
   getAllTypes(): string[];
   addEmptyArgument(parentId: string, type: string): void;
+  getFunctionSchema(functionId: string): FuncItem | undefined;
 }
 
 const SchemeProvider = React.createContext<SchemeContext>({
@@ -31,6 +33,7 @@ const SchemeProvider = React.createContext<SchemeContext>({
   getArgumentByArgId: () => undefined,
   getAllTypes: () => [],
   addEmptyArgument: () => null,
+  getFunctionSchema: () => undefined,
 });
 
 SchemeProvider.displayName = 'SchemeContextProvider';
@@ -102,8 +105,13 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
   function getAllTypes(): string[] {
     return [...new Set(config.parts.func.map((x) => x.type))];
   }
+
   function addEmptyArgument(parentId: string, type: string): void {
     setScheme((prev) => utils.addEmptyArgument(parentId, type, prev));
+  }
+
+  function getFunctionSchema(functionId: string) {
+    return config.parts.func.find((fn) => fn.id === functionId);
   }
 
   return (
@@ -120,6 +128,7 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
         getArgumentByArgId,
         getAllTypes,
         addEmptyArgument,
+        getFunctionSchema,
       }}
     >
       {children}

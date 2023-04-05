@@ -6,7 +6,7 @@ import SelectWidgetContainer from './SelectWidgetContainer';
 import { ConfigItem } from '../../Models/ConfigItems';
 import { useToggleContext } from '../../Context/ToggleContext';
 import { useOutsideClick } from '../../Hooks/useOutsideClick';
-import FunctionSchema from '../FunctionSchema/FunctionSchema';
+import FunctionSchemeContainer from '../FunctionSchema/FunctionSchemeContainer';
 import { useShallowDrop } from '../../Hooks/useShallowDrop';
 import { DragItem } from '../../Models/DragItem';
 import ValueWidgetContainer from './ValueWidgetContainer';
@@ -71,7 +71,7 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
 
   const renderHeader = () => {
     if (!showWidget) {
-      const displayedValue = formatDisplayedValue ? formatDisplayedValue(argument) : argument?.value;
+      const displayedValue = formatDisplayedValue ? formatDisplayedValue(argument) : argument.source === 'value' ? argument.value : argument.name;
       return (
         <span ref={dropRef} onClick={() => toggleElement(argument.argId)} hidden={showWidget} className="widget-factory__header">
           {displayedValue !== '' ? displayedValue : '__'}
@@ -82,7 +82,7 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
 
   const renderSchema = () => {
     if (argument.source === 'func') {
-      return <FunctionSchema argument={argument} />;
+      return <FunctionSchemeContainer argument={argument} />;
     }
   };
 

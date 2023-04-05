@@ -12,7 +12,7 @@ const basic: Scheme = [
     value: 'SUM',
     type: 'number',
     argId: 'root',
-    parentId: ''
+    parentId: '',
   },
 ];
 
@@ -35,12 +35,12 @@ const Demo = () => {
             scheme: {
               arguments: [
                 {
-                  type: 'number'
-                }
+                  type: 'number',
+                },
               ],
               hasStrictScheme: false,
-            }
-          }
+            },
+          },
         },
         {
           id: 'divide',
@@ -52,12 +52,15 @@ const Demo = () => {
             scheme: {
               arguments: [
                 {
-                  type: 'number'
-                }
+                  type: 'number',
+                },
+                {
+                  type: 'number',
+                },
               ],
-              hasStrictScheme: false,
-            }
-          }
+              hasStrictScheme: true,
+            },
+          },
         },
         {
           id: 'substract',
@@ -69,12 +72,15 @@ const Demo = () => {
             scheme: {
               arguments: [
                 {
-                  type: 'number'
-                }
+                  type: 'number',
+                },
+                {
+                  type: 'number',
+                },
               ],
-              hasStrictScheme: false,
-            }
-          }
+              hasStrictScheme: true,
+            },
+          },
         },
       ],
       field: [
@@ -83,21 +89,21 @@ const Demo = () => {
           source: 'field',
           name: 'Field1',
           value: 'Field1',
-          type: 'number'
+          type: 'number',
         },
         {
           id: 'Field2',
           source: 'field',
           name: 'Field2',
           value: 'Field2',
-          type: 'number'
+          type: 'number',
         },
         {
           id: 'Field3',
           source: 'field',
           name: 'Field3',
           value: 'Field3',
-          type: 'number'
+          type: 'number',
         },
       ],
     },
@@ -107,10 +113,10 @@ const Demo = () => {
           label: 'Functions',
         },
         field: {
-          label: 'Fields'
-        }
-      }
-    }
+          label: 'Fields',
+        },
+      },
+    },
   };
 
   return <FunctionDesign scheme={basic} config={config} onChange={onChange} />;
