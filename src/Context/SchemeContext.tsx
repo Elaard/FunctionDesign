@@ -106,8 +106,6 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
     setScheme((prev) => utils.addEmptyArgument(parentId, type, prev));
   }
 
-  console.log(scheme);
-
   return (
     <SchemeProvider.Provider
       value={{

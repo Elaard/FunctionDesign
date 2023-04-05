@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import './WidgetFactory.scss';
 import { WidgetPropsWithDrop } from '../../Models/WidgetProps';
 import { useSchemeContext } from '../../Context/SchemeContext';
 import SelectWidgetContainer from './SelectWidgetContainer';
@@ -6,7 +7,6 @@ import { ConfigItem } from '../../Models/ConfigItems';
 import { useToggleContext } from '../../Context/ToggleContext';
 import { useOutsideClick } from '../../Hooks/useOutsideClick';
 import FunctionSchema from '../FunctionSchema/FunctionSchema';
-import './WidgetFactory.scss';
 import { useShallowDrop } from '../../Hooks/useShallowDrop';
 import { DragItem } from '../../Models/DragItem';
 import ValueWidgetContainer from './ValueWidgetContainer';
