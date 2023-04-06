@@ -1,9 +1,9 @@
 import React from 'react';
 import './RootFunction.scss';
 import { useSchemeContext } from '../../Context/SchemeContext';
-import WidgetFactory from '../WidgetFactory/WidgetFactory';
 import { DragItem } from '../../Models/DragItem';
 import { argumentUtils } from '../../Utils/ArgumentUtils';
+import WidgetFactoryContainer from '../WidgetFactory/WidgetFactoryContainer';
 
 export default function RootFunction() {
   const { schemeUtils, configUtils } = useSchemeContext();
@@ -15,7 +15,7 @@ export default function RootFunction() {
   const argument = schemeUtils.getArgumentByArgId('root');
   return (
     <ul className="root-function">
-      {argument ? <WidgetFactory argument={argument} canDrop={canDrop} acceptedDropTypes={configUtils.getTypesBySource('func')} /> : null}
+      {argument ? <WidgetFactoryContainer argument={argument} canDrop={canDrop} acceptedDropTypes={configUtils.getTypesBySource('func')} /> : null}
     </ul>
   );
 }

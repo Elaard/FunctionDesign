@@ -1,22 +1,44 @@
 import React, { memo, useCallback, useRef } from 'react';
 import './WidgetFactory.scss';
-import { WidgetPropsWithDrop } from '../../Models/WidgetProps';
-import { useSchemeContext } from '../../Context/SchemeContext';
 import SelectWidgetContainer from './SelectWidgetContainer';
 import { ConfigItem } from '../../Models/ConfigItems';
-import { useToggleContext } from '../../Context/ToggleContext';
 import { useOutsideClick } from '../../Hooks/useOutsideClick';
 import FunctionSchemeContainer from '../FunctionSchema/FunctionSchemeContainer';
 import { useShallowDrop } from '../../Hooks/useShallowDrop';
 import { DragItem } from '../../Models/DragItem';
 import ValueWidgetContainer from './ValueWidgetContainer';
 import { argumentUtils } from '../../Utils/ArgumentUtils';
+import { SchemeItem } from '../../Models/SchemeItem';
+import { Widget } from '../../Models/Config';
 
-function WidgetFactory({ argument, acceptedDropTypes, canDrop }: WidgetPropsWithDrop) {
-  const { clearToggled, toggleElement, isToggled } = useToggleContext();
-  const { configUtils, schemeUtils } = useSchemeContext();
+interface WidgetFactoryProps {
+  argument: SchemeItem;
+  canDrop?: (draggItem: DragItem) => boolean;
+  isToggled: (argumentId: string) => boolean;
+  toggleElement: (id: string) => void;
+  clearToggled: () => void;
+  acceptedDropTypes: string[];
+  getWidget(source: string, type: string): Widget;
+  replaceArgument(argument: ConfigItem, replacedId: string): void;
+  updateArgumentValue(value: string, argument: SchemeItem): void;
+  getConfigItem(itemId: string, source: string): ConfigItem | undefined;
+  getItemsBySourceAndType(source: string, type: string): ConfigItem[];
+}
 
-  const { factory: Widget, formatDisplayedValue } = configUtils.getWidget(argument.source, argument.type);
+function WidgetFactory({
+  argument,
+  acceptedDropTypes,
+  canDrop,
+  isToggled,
+  getWidget,
+  clearToggled,
+  toggleElement,
+  getConfigItem,
+  replaceArgument,
+  updateArgumentValue,
+  getItemsBySourceAndType,
+}: WidgetFactoryProps) {
+  const { factory: Widget, formatDisplayedValue } = getWidget(argument.source, argument.type);
 
   const widgetLiRef = useRef<HTMLLIElement>();
 
@@ -30,18 +52,18 @@ function WidgetFactory({ argument, acceptedDropTypes, canDrop }: WidgetPropsWith
 
   useOutsideClick(widgetLiRef, onOutsideClick);
 
-  const onDrop = useCallback((item: DragItem) => {
-    schemeUtils.replaceArgument(item.item, argument.argId);
-  }, []);
+  const onDrop = useCallback(
+    (item: DragItem) => {
+      replaceArgument(item.item, argument.argId);
+    },
+    [replaceArgument, argument?.argId],
+  );
 
   const [, dropRef] = useShallowDrop(acceptedDropTypes, onDrop, canDrop);
 
-  const updateArgumentPureValue = useCallback(
-    (value: string) => schemeUtils.updateArgumentValue(value, argument),
-    [schemeUtils.updateArgumentValue, argument],
-  );
+  const updateArgumentPureValue = useCallback((value: string) => updateArgumentValue(value, argument), [updateArgumentValue, argument]);
 
-  const updateArgumentItem = (selected: ConfigItem) => schemeUtils.replaceArgument(selected, argument.argId);
+  const updateArgumentItem = useCallback((selected: ConfigItem) => replaceArgument(selected, argument.argId), [replaceArgument, argument?.argId]);
 
   const renderFactoryWidget = useCallback(
     (onChange: any, value?: string, items?: ConfigItem[]) => <Widget onChange={onChange} value={value} items={items} />,
@@ -66,7 +88,7 @@ function WidgetFactory({ argument, acceptedDropTypes, canDrop }: WidgetPropsWith
             onChange={updateArgumentItem}
             renderWidget={renderFactoryWidget}
             onUseAction={clearToggled}
-            items={configUtils.getItemsBySourceAndType(argument.source, argument.type)}
+            items={getItemsBySourceAndType(argument.source, argument.type)}
           />
         );
     }
@@ -81,7 +103,7 @@ function WidgetFactory({ argument, acceptedDropTypes, canDrop }: WidgetPropsWith
   const renderHeader = () => {
     function getDisplayedValue() {
       if (formatDisplayedValue) {
-        return formatDisplayedValue(argument, configUtils.getConfigItem(argument.itemId, argument.source));
+        return formatDisplayedValue(argument, getConfigItem(argument.itemId, argument.source));
       }
       if (argument.value === 'value') {
         return argument.value;
@@ -116,4 +138,4 @@ function WidgetFactory({ argument, acceptedDropTypes, canDrop }: WidgetPropsWith
   );
 }
 
-export default memo(WidgetFactory);
+export default WidgetFactory;

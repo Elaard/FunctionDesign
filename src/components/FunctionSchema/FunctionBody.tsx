@@ -1,7 +1,7 @@
 import React from 'react';
 import { SchemeItem } from '../../Models/SchemeItem';
-import WidgetFactory from '../WidgetFactory/WidgetFactory';
 import Separator from '../Separator/Separator';
+import WidgetFactoryContainer from '../WidgetFactory/WidgetFactoryContainer';
 
 interface FunctionSchemaProps {
   args: SchemeItem[];
@@ -18,7 +18,7 @@ function FunctionBody({ args }: FunctionSchemaProps) {
     <>
       {args.map((arg, index) => (
         <>
-          <WidgetFactory key={arg.argId + '_arg'} argument={arg} acceptedDropTypes={[arg.type]} />
+          <WidgetFactoryContainer key={arg.argId + '_arg'} argument={arg} acceptedDropTypes={[arg.type]} />
           {renderSeparator(index)}
         </>
       ))}
