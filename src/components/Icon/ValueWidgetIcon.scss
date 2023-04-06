@@ -1,0 +1,9 @@
+.value-widget-icon {
+  height: 2.5rem;
+  cursor: pointer;
+  margin-left: 3px;
+  transition: all 0.2s;
+  &:hover {
+    transform: scale(1.2);
+  }
+}

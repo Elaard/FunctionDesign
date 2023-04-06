@@ -1,5 +1,6 @@
 .widget-factory {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   &__header {
     cursor: pointer;
   }

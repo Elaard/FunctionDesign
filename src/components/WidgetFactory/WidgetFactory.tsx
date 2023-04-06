@@ -10,12 +10,13 @@ import FunctionSchemeContainer from '../FunctionSchema/FunctionSchemeContainer';
 import { useShallowDrop } from '../../Hooks/useShallowDrop';
 import { DragItem } from '../../Models/DragItem';
 import ValueWidgetContainer from './ValueWidgetContainer';
+import { NullableString } from '../../Models/BuiltIn';
 
 export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: WidgetPropsWithDrop) {
   const { clearToggled, toggleElement, isToggled } = useToggleContext();
   const { updateArgument, updateArgumentValue, getWidget, getItemsByType, replaceArgument } = useSchemeContext();
 
-  const { factory: Widget, formatDisplayedValue } = getWidget(argument.source);
+  const { factory: Widget, formatDisplayedValue } = getWidget(argument.source, argument.type);
 
   const clickRef = useRef<HTMLDivElement>();
 
@@ -35,29 +36,31 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
 
   const [, dropRef] = useShallowDrop(acceptedDropTypes, onDrop, canDrop);
 
+  const updateArgumentPureValue = (value: NullableString) => updateArgumentValue(value, argument);
+
+  const updateArgumentItem = (selected: ConfigItem) => updateArgument(selected, argument);
+
+  const renderWidgett = (onChange: any, value: NullableString, items?: ConfigItem[]) => <Widget onChange={onChange} value={value} items={items} />;
+
   const getRenderedWidget = () => {
     switch (argument.source) {
       case 'value':
         return (
           <ValueWidgetContainer
-            value={argument.value}
-            onChange={(value: string) => {
-              updateArgumentValue(value, argument);
-              clearToggled();
-            }}
-            renderWidget={(onChange, value) => <Widget onChange={onChange} value={value} />}
+            oldValue={argument.value}
+            onChange={updateArgumentPureValue}
+            renderWidget={renderWidgett}
+            onUseAction={clearToggled}
           />
         );
       default:
         return (
           <SelectWidgetContainer
+            oldValue={argument?.id}
+            onChange={updateArgumentItem}
+            renderWidget={renderWidgett}
+            onUseAction={clearToggled}
             items={getItemsByType(argument.source, argument.type)}
-            Widget={Widget}
-            argument={argument}
-            onChange={(selected: ConfigItem) => {
-              updateArgument(selected, argument);
-              clearToggled();
-            }}
           />
         );
     }

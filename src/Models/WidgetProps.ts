@@ -2,13 +2,7 @@ import { ConnectDropTarget } from 'react-dnd';
 import { SchemeItem } from './SchemeItem';
 import { ConfigItem } from './ConfigItems';
 import { DragItem } from './DragItem';
-
-export interface SelectWidgetProps {
-  items: ConfigItem[];
-  argument: SchemeItem;
-  onChange: (selected: ConfigItem) => void;
-  Widget: React.FunctionComponent<WidgetProps>;
-}
+import { NullableString } from './BuiltIn';
 
 export interface ValueWidgetProps {
   value: string;
@@ -17,7 +11,7 @@ export interface ValueWidgetProps {
 }
 
 export interface WidgetProps {
-  value: string;
+  value: NullableString;
   onChange: (value: string) => void;
   items?: ConfigItem[];
 }

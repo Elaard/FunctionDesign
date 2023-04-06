@@ -12,8 +12,11 @@ export type Widget = {
   formatDisplayedValue: (value: SchemeItem) => string;
 };
 
+export type ValueWidgetType = Record<string, Widget>;
+
 type ConfigTypes = {
-  [key: string]: Widget;
+  [key: string]: ValueWidgetType;
+  value: ValueWidgetType;
 };
 
 export interface Config {

@@ -1,22 +1,41 @@
 import React, { useState, useEffect } from 'react';
+import './ValueWidgetContainer.scss';
+import ValueWidgetIcon from '../Icon/ValueWidgetIcon';
+import { NullableString } from '../../Models/BuiltIn';
+import Actions from '../Actions/Actions';
 
 interface ValueWidgetContainerProps {
-  value: string;
-  onChange: (value: string) => void;
-  renderWidget: (onChange: (value: string) => void, value: string) => JSX.Element;
+  oldValue: NullableString;
+  onChange: (value: NullableString) => void;
+  onUseAction: () => void;
+  renderWidget: (onChange: (value: NullableString) => void, value: NullableString) => JSX.Element;
 }
 
-export default function ValueWidgetContainer({ renderWidget, onChange }: ValueWidgetContainerProps) {
-  const [value, setValue] = useState('');
+export default function ValueWidgetContainer({ renderWidget, oldValue, onUseAction, onChange }: ValueWidgetContainerProps) {
+  const [value, setValue] = useState<NullableString>(null);
 
   useEffect(() => {
-    setValue(value);
-  }, [value]);
+    setValue(oldValue);
+  }, [oldValue]);
+
+  const actionsShouldBeVisible = value !== oldValue;
+
+  const acceptChange = () => {
+    onChange(value);
+    onUseAction();
+  };
+
+  const rejectChange = () => {
+    onUseAction();
+  };
 
   return (
     <>
-      {/* {renderWidget(onChange)} */}
-      <span>accept</span>
+      {renderWidget(setValue, value)}
+      <Actions visible={actionsShouldBeVisible}>
+        <ValueWidgetIcon src="./reject-icon.png" onClick={rejectChange} />
+        <ValueWidgetIcon src="./accept-icon.png" onClick={acceptChange} />
+      </Actions>
     </>
   );
 }

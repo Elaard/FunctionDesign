@@ -24,16 +24,22 @@ export const BasicConfig: Config = {
   },
   types: {
     func: {
-      factory: VanillaSelect,
-      formatDisplayedValue,
+      number: {
+        factory: VanillaSelect,
+        formatDisplayedValue,
+      },
     },
     field: {
-      factory: VanillaSelect,
-      formatDisplayedValue,
+      number: {
+        factory: VanillaSelect,
+        formatDisplayedValue,
+      },
     },
-    number: {
-      factory: VanillaInput,
-      formatDisplayedValue: (value) => value.value,
+    value: {
+      number: {
+        factory: VanillaInput,
+        formatDisplayedValue: (value) => value.value,
+      },
     },
   },
 };

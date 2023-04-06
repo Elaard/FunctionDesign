@@ -5,15 +5,16 @@ import { SchemeUtils as utils } from '../Utils/SchemeUtils';
 import { Config, Widget } from '../Models/Config';
 import { ConfigItem } from '../Models/ConfigItems';
 import { FuncItem } from '../Models/FuncItem';
+import { NullableString } from '../Models/BuiltIn';
 
 interface SchemeContext {
-  getWidget(source: string): Widget;
+  getWidget(source: string, type: string): Widget;
   addArgument: (argument: ConfigItem, parentId: string) => void;
   replaceArgument: (argument: ConfigItem, replacedId: string) => void;
   removeArgument(deletedId: string): void;
   getItemsByType(source: string, type: string): ConfigItem[];
   updateArgument(updated: Partial<ConfigItem>, argument: SchemeItem): void;
-  updateArgumentValue(value: string, argument: SchemeItem): void;
+  updateArgumentValue(value: NullableString, argument: SchemeItem): void;
   getFunctionArguments(functionId: string): SchemeItem[];
   getArgumentByArgId(argumentId: string): SchemeItem | undefined;
   getAllTypes(): string[];
@@ -76,12 +77,12 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
     setScheme((prev) => utils.updateArgument(argument, updated, prev));
   }
 
-  function updateArgumentValue(value: string, argument: SchemeItem) {
+  function updateArgumentValue(value: NullableString, argument: SchemeItem) {
     setScheme((prev) => utils.updateArgument(argument, { value }, prev));
   }
 
-  function getWidget(source: string): Widget {
-    const widget = config.types[source];
+  function getWidget(source: string, type: string): Widget {
+    const widget = config.types[source][type];
 
     if (!widget) {
       throw new Error('no matching widget');
