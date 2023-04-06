@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import './FunctionSchemeContainer.scss';
 import { useSchemeContext } from '../../Context/SchemeContext';
 import Bracket from '../Bracket/Bracket';
@@ -12,7 +12,7 @@ interface FunctionSchemaProps {
   argument: SchemeItem;
 }
 
-export default function FunctionSchemeContainer({ argument }: FunctionSchemaProps) {
+function FunctionSchemeContainer({ argument }: FunctionSchemaProps) {
   const { schemeUtils } = useSchemeContext();
   const args = schemeUtils.getArgumentsByParentId(argument.argId);
 
@@ -35,3 +35,5 @@ export default function FunctionSchemeContainer({ argument }: FunctionSchemaProp
     </ul>
   );
 }
+
+export default memo(FunctionSchemeContainer);

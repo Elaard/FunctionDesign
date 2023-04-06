@@ -1,5 +1,4 @@
 import React from 'react';
-import { ConnectDropTarget } from 'react-dnd';
 import { SchemeItem } from '../../Models/SchemeItem';
 import WidgetFactory from '../WidgetFactory/WidgetFactory';
 import Separator from '../Separator/Separator';
@@ -8,7 +7,7 @@ interface FunctionSchemaProps {
   args: SchemeItem[];
 }
 
-export default function FunctionBody({ args }: FunctionSchemaProps) {
+function FunctionBody({ args }: FunctionSchemaProps) {
   const renderSeparator = (argIndex: number) => {
     if (argIndex !== args.length - 1) {
       return <Separator separator="," />;
@@ -26,3 +25,5 @@ export default function FunctionBody({ args }: FunctionSchemaProps) {
     </>
   );
 }
+
+export default FunctionBody;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { useKeyPress } from '../Hooks/useKeyPress';
 import { useSchemeContext } from './SchemeContext';
@@ -12,7 +12,7 @@ interface ToggleContext {
 const ToggleProvider = React.createContext<ToggleContext>({
   isToggled: () => false,
   toggleElement: () => null,
-  clearToggled: () => null
+  clearToggled: () => null,
 });
 
 ToggleProvider.displayName = 'ToggleContextProvider';
@@ -28,37 +28,34 @@ interface ToggleContextProps {
 const ToggleContext = ({ children }: ToggleContextProps) => {
   const [toggledId, setToggledId] = useState<string>('');
 
-  const { removeArgument } = useSchemeContext();
+  const { schemeUtils } = useSchemeContext();
 
-  function clearToggled() {
-    setToggledId('');
-  }
+  const clearToggled = useCallback(() => setToggledId(''), []);
 
-  function toggleElement(argumentId: string) {
-    setToggledId(argumentId);
-  }
+  const isToggled = useCallback((argumentId: string) => toggledId === argumentId, [toggledId]);
 
-  function isToggled(argumentId: string) {
-    return toggledId === argumentId;
-  }
+  const toggleElement = useCallback((argumentId: string) => setToggledId(argumentId), []);
 
-  function removeToggled() {
+  const removeToggled = useCallback(() => {
     if (toggledId) {
-      removeArgument(toggledId);
+      schemeUtils.removeArgument(toggledId);
       clearToggled();
     }
-  }
+  }, [schemeUtils.removeArgument, clearToggled, toggledId]);
 
   useKeyPress('Delete', removeToggled);
 
-  return <ToggleProvider.Provider
-    value={{
-      isToggled,
-      clearToggled,
-      toggleElement,
-    }}>
-    {children}
-  </ToggleProvider.Provider>;
+  return (
+    <ToggleProvider.Provider
+      value={{
+        isToggled,
+        clearToggled,
+        toggleElement,
+      }}
+    >
+      {children}
+    </ToggleProvider.Provider>
+  );
 };
 
-export default ToggleContext;
+export default memo(ToggleContext);

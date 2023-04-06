@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { memo, useCallback, useRef } from 'react';
 import './WidgetFactory.scss';
 import { WidgetPropsWithDrop } from '../../Models/WidgetProps';
 import { useSchemeContext } from '../../Context/SchemeContext';
@@ -12,13 +12,13 @@ import { DragItem } from '../../Models/DragItem';
 import ValueWidgetContainer from './ValueWidgetContainer';
 import { argumentUtils } from '../../Utils/ArgumentUtils';
 
-export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: WidgetPropsWithDrop) {
+function WidgetFactory({ argument, acceptedDropTypes, canDrop }: WidgetPropsWithDrop) {
   const { clearToggled, toggleElement, isToggled } = useToggleContext();
   const { configUtils, schemeUtils } = useSchemeContext();
 
   const { factory: Widget, formatDisplayedValue } = configUtils.getWidget(argument.source, argument.type);
 
-  const widgetLiRef = useRef<HTMLDivElement>();
+  const widgetLiRef = useRef<HTMLLIElement>();
 
   const showWidget = isToggled(argument.argId);
 
@@ -30,17 +30,23 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
 
   useOutsideClick(widgetLiRef, onOutsideClick);
 
-  const onDrop = (item: DragItem) => {
+  const onDrop = useCallback((item: DragItem) => {
     schemeUtils.replaceArgument(item.item, argument.argId);
-  };
+  }, []);
 
   const [, dropRef] = useShallowDrop(acceptedDropTypes, onDrop, canDrop);
 
-  const updateArgumentPureValue = (value: string) => schemeUtils.updateArgumentValue(value, argument);
+  const updateArgumentPureValue = useCallback(
+    (value: string) => schemeUtils.updateArgumentValue(value, argument),
+    [schemeUtils.updateArgumentValue, argument],
+  );
 
   const updateArgumentItem = (selected: ConfigItem) => schemeUtils.replaceArgument(selected, argument.argId);
 
-  const renderWidgett = (onChange: any, value?: string, items?: ConfigItem[]) => <Widget onChange={onChange} value={value} items={items} />;
+  const renderFactoryWidget = useCallback(
+    (onChange: any, value?: string, items?: ConfigItem[]) => <Widget onChange={onChange} value={value} items={items} />,
+    [Widget],
+  );
 
   const getRenderedWidget = () => {
     switch (argument.source) {
@@ -49,7 +55,7 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
           <ValueWidgetContainer
             oldValue={argument.value}
             onChange={updateArgumentPureValue}
-            renderWidget={renderWidgett}
+            renderWidget={renderFactoryWidget}
             onUseAction={clearToggled}
           />
         );
@@ -58,7 +64,7 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
           <SelectWidgetContainer
             oldValue={argument?.itemId}
             onChange={updateArgumentItem}
-            renderWidget={renderWidgett}
+            renderWidget={renderFactoryWidget}
             onUseAction={clearToggled}
             items={configUtils.getItemsBySourceAndType(argument.source, argument.type)}
           />
@@ -109,3 +115,5 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
     </li>
   );
 }
+
+export default memo(WidgetFactory);
