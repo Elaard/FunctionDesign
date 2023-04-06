@@ -10,15 +10,15 @@ import FunctionSchemeContainer from '../FunctionSchema/FunctionSchemeContainer';
 import { useShallowDrop } from '../../Hooks/useShallowDrop';
 import { DragItem } from '../../Models/DragItem';
 import ValueWidgetContainer from './ValueWidgetContainer';
-import { NullableString } from '../../Models/BuiltIn';
+import { argumentUtils } from '../../Utils/ArgumentUtils';
 
 export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: WidgetPropsWithDrop) {
   const { clearToggled, toggleElement, isToggled } = useToggleContext();
-  const { updateArgument, updateArgumentValue, getWidget, getItemsByType, replaceArgument } = useSchemeContext();
+  const { replaceArgument, updateArgumentValue, getWidget, getItemsByType, getConfigItem } = useSchemeContext();
 
   const { factory: Widget, formatDisplayedValue } = getWidget(argument.source, argument.type);
 
-  const clickRef = useRef<HTMLDivElement>();
+  const widgetLiRef = useRef<HTMLDivElement>();
 
   const showWidget = isToggled(argument.argId);
 
@@ -28,7 +28,7 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
     }
   };
 
-  useOutsideClick(clickRef, onOutsideClick);
+  useOutsideClick(widgetLiRef, onOutsideClick);
 
   const onDrop = (item: DragItem) => {
     replaceArgument(item.item, argument.argId);
@@ -36,11 +36,11 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
 
   const [, dropRef] = useShallowDrop(acceptedDropTypes, onDrop, canDrop);
 
-  const updateArgumentPureValue = (value: NullableString) => updateArgumentValue(value, argument);
+  const updateArgumentPureValue = (value: string) => updateArgumentValue(value, argument);
 
-  const updateArgumentItem = (selected: ConfigItem) => updateArgument(selected, argument);
+  const updateArgumentItem = (selected: ConfigItem) => replaceArgument(selected, argument.argId);
 
-  const renderWidgett = (onChange: any, value: NullableString, items?: ConfigItem[]) => <Widget onChange={onChange} value={value} items={items} />;
+  const renderWidgett = (onChange: any, value?: string, items?: ConfigItem[]) => <Widget onChange={onChange} value={value} items={items} />;
 
   const getRenderedWidget = () => {
     switch (argument.source) {
@@ -56,7 +56,7 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
       default:
         return (
           <SelectWidgetContainer
-            oldValue={argument?.id}
+            oldValue={argument?.itemId}
             onChange={updateArgumentItem}
             renderWidget={renderWidgett}
             onUseAction={clearToggled}
@@ -73,24 +73,36 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
   };
 
   const renderHeader = () => {
+    function getDisplayedValue() {
+      if (formatDisplayedValue) {
+        return formatDisplayedValue(argument, getConfigItem(argument.itemId, argument.source));
+      }
+      if (argument.value === 'value') {
+        return argument.value;
+      }
+    }
+    function onClick() {
+      toggleElement(argument.argId);
+    }
     if (!showWidget) {
-      const displayedValue = formatDisplayedValue ? formatDisplayedValue(argument) : argument.source === 'value' ? argument.value : argument.name;
+      const displayedValue = getDisplayedValue();
       return (
-        <span ref={dropRef} onClick={() => toggleElement(argument.argId)} hidden={showWidget} className="widget-factory__header">
-          {displayedValue !== '' ? displayedValue : '__'}
+        <span ref={dropRef} onClick={onClick} hidden={showWidget} className="widget-factory__header">
+          {displayedValue ? displayedValue : '__'}
         </span>
       );
     }
   };
 
   const renderSchema = () => {
-    if (argument.source === 'func') {
+    if (argumentUtils.whetherSourceIsFunction(argument)) {
       return <FunctionSchemeContainer argument={argument} />;
     }
   };
 
   return (
-    <li key={argument.argId + '_wf'} ref={clickRef} className="widget-factory">
+    //TODO: fix type
+    <li key={argument.argId + '_wf'} ref={widgetLiRef as any} className="widget-factory">
       {renderHeader()}
       {renderWidget()}
       {renderSchema()}

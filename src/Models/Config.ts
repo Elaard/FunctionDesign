@@ -1,4 +1,4 @@
-import { ConfigItems } from './ConfigItems';
+import { ConfigItem, ConfigItems } from './ConfigItems';
 import { ConfigSources } from './ConfigSource';
 import { SchemeItem } from './SchemeItem';
 import { WidgetProps } from './WidgetProps';
@@ -9,7 +9,7 @@ interface ConfigSettings {
 
 export type Widget = {
   factory: React.FunctionComponent<WidgetProps>;
-  formatDisplayedValue: (value: SchemeItem) => string;
+  formatDisplayedValue: (value: SchemeItem, configItem?: ConfigItem) => string;
 };
 
 export type ValueWidgetType = Record<string, Widget>;

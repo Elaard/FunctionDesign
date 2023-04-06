@@ -1,14 +1,12 @@
 import React from 'react';
 import './FunctionSchemeContainer.scss';
 import { useSchemeContext } from '../../Context/SchemeContext';
-import WidgetFactory from '../WidgetFactory/WidgetFactory';
 import Bracket from '../Bracket/Bracket';
 import { useShallowDrop } from '../../Hooks/useShallowDrop';
 import { SchemeItem } from '../../Models/SchemeItem';
 import AddArgument from './AddArgument';
 import { DragItem } from '../../Models/DragItem';
 import FunctionBody from './FunctionBody';
-import { SchemeUtils } from '../../Utils/SchemeUtils';
 
 interface FunctionSchemaProps {
   argument: SchemeItem;

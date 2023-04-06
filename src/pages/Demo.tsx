@@ -2,13 +2,12 @@ import React from 'react';
 import FunctionDesign from '../components/FunctionDesign/FunctionDesign';
 import { Scheme } from '../Models/SchemeItem';
 import { Config } from '../Models/Config';
-import { BasicConfig } from '../Utils/Config';
+import { BasicConfig } from '../Utils/BasicConfig';
 
 const basic: Scheme = [
   {
-    id: 'root',
+    itemId: 'sum',
     source: 'func',
-    name: 'sum',
     value: 'SUM',
     type: 'number',
     argId: 'root',
@@ -36,6 +35,7 @@ const Demo = () => {
               arguments: [
                 {
                   type: 'number',
+                  source: 'value',
                 },
               ],
               hasStrictScheme: false,
@@ -53,9 +53,11 @@ const Demo = () => {
               arguments: [
                 {
                   type: 'number',
+                  source: 'value',
                 },
                 {
                   type: 'number',
+                  source: 'value',
                 },
               ],
               hasStrictScheme: true,
@@ -73,9 +75,11 @@ const Demo = () => {
               arguments: [
                 {
                   type: 'number',
+                  source: 'value',
                 },
                 {
                   type: 'number',
+                  source: 'value',
                 },
               ],
               hasStrictScheme: true,

@@ -2,6 +2,7 @@ import { SimpleItem } from './SimpleItem';
 
 export interface FuncItemMetaSchemeArg {
   type: string;
+  source: string;
 }
 
 export interface FuncItemMetaScheme {
@@ -14,5 +15,5 @@ export interface FuncItemMeta {
 }
 
 export interface FuncItem extends SimpleItem {
-  meta: FuncItemMeta;
+  meta?: FuncItemMeta;
 }

@@ -1,8 +1,11 @@
-import { SimpleItem } from './SimpleItem';
-
-export interface SchemeItem extends SimpleItem {
+export interface SchemeItem {
   argId: string;
-  parentId: string | null;
+  itemId: string;
+  parentId: string;
+
+  type: string;
+  value?: string;
+  source: string;
 }
 
 export type Scheme = SchemeItem[];

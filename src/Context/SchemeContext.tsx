@@ -4,8 +4,7 @@ import { Scheme, SchemeItem } from '../Models/SchemeItem';
 import { SchemeUtils as utils } from '../Utils/SchemeUtils';
 import { Config, Widget } from '../Models/Config';
 import { ConfigItem } from '../Models/ConfigItems';
-import { FuncItem } from '../Models/FuncItem';
-import { NullableString } from '../Models/BuiltIn';
+import { FuncItem, FuncItemMeta } from '../Models/FuncItem';
 
 interface SchemeContext {
   getWidget(source: string, type: string): Widget;
@@ -13,13 +12,14 @@ interface SchemeContext {
   replaceArgument: (argument: ConfigItem, replacedId: string) => void;
   removeArgument(deletedId: string): void;
   getItemsByType(source: string, type: string): ConfigItem[];
-  updateArgument(updated: Partial<ConfigItem>, argument: SchemeItem): void;
-  updateArgumentValue(value: NullableString, argument: SchemeItem): void;
+  updateArgumentValue(value: string, argument: SchemeItem): void;
   getFunctionArguments(functionId: string): SchemeItem[];
   getArgumentByArgId(argumentId: string): SchemeItem | undefined;
   getAllTypes(): string[];
   addEmptyArgument(parentId: string, type: string): void;
   getFunctionSchema(functionId: string): FuncItem | undefined;
+  getFunctionMeta(funcId: string): FuncItemMeta;
+  getConfigItem(itemId: string, source: string): ConfigItem | undefined;
 }
 
 const SchemeProvider = React.createContext<SchemeContext>({
@@ -28,13 +28,13 @@ const SchemeProvider = React.createContext<SchemeContext>({
   replaceArgument: () => null,
   removeArgument: () => null,
   getItemsByType: () => [],
-  updateArgument: () => null,
   updateArgumentValue: () => null,
   getFunctionArguments: () => [],
   getArgumentByArgId: () => undefined,
   getAllTypes: () => [],
   addEmptyArgument: () => null,
   getFunctionSchema: () => undefined,
+  getConfigItem: () => undefined,
 });
 
 SchemeProvider.displayName = 'SchemeContextProvider';
@@ -73,12 +73,8 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
     setScheme((prev) => utils.replaceArgument(argument, replacedId, prev));
   }
 
-  function updateArgument(updated: Partial<ConfigItem>, argument: SchemeItem) {
-    setScheme((prev) => utils.updateArgument(argument, updated, prev));
-  }
-
-  function updateArgumentValue(value: NullableString, argument: SchemeItem) {
-    setScheme((prev) => utils.updateArgument(argument, { value }, prev));
+  function updateArgumentValue(value: string, argument: SchemeItem) {
+    setScheme((prev) => utils.updateArgumentValue(argument, value, prev));
   }
 
   function getWidget(source: string, type: string): Widget {
@@ -115,7 +111,16 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
     return config.parts.func.find((fn) => fn.id === functionId);
   }
 
-  console.log(scheme);
+  function getFunctionMeta(funcId: string): FuncItemMeta {
+    return config.parts.func.find((item) => item.id === funcId)?.meta as FuncItemMeta;
+  }
+
+  function getConfigItem(itemId: string, source: string): ConfigItem | undefined {
+    if (source === 'value') {
+      return undefined;
+    }
+    return config.parts[source].find((item) => item.id === itemId);
+  }
 
   return (
     <SchemeProvider.Provider
@@ -123,7 +128,6 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
         getWidget,
         addArgument,
         removeArgument,
-        updateArgument,
         updateArgumentValue,
         replaceArgument,
         getItemsByType,
@@ -132,6 +136,8 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
         getAllTypes,
         addEmptyArgument,
         getFunctionSchema,
+        getFunctionMeta,
+        getConfigItem,
       }}
     >
       {children}
