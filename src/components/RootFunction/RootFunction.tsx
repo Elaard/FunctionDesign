@@ -6,14 +6,16 @@ import { DragItem } from '../../Models/DragItem';
 import { argumentUtils } from '../../Utils/ArgumentUtils';
 
 export default function RootFunction() {
-  const { getArgumentByArgId, getAllTypes } = useSchemeContext();
+  const { schemeUtils, configUtils } = useSchemeContext();
 
   const canDrop = (draggItem: DragItem) => {
     return argumentUtils.whetherSourceIsFunction(draggItem.item);
   };
 
-  const argument = getArgumentByArgId('root');
+  const argument = schemeUtils.getArgumentByArgId('root');
   return (
-    <ul className="root-function">{argument ? <WidgetFactory argument={argument} canDrop={canDrop} acceptedDropTypes={getAllTypes()} /> : null}</ul>
+    <ul className="root-function">
+      {argument ? <WidgetFactory argument={argument} canDrop={canDrop} acceptedDropTypes={configUtils.getTypesBySource('func')} /> : null}
+    </ul>
   );
 }

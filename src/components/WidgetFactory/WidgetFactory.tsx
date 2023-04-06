@@ -14,9 +14,9 @@ import { argumentUtils } from '../../Utils/ArgumentUtils';
 
 export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: WidgetPropsWithDrop) {
   const { clearToggled, toggleElement, isToggled } = useToggleContext();
-  const { replaceArgument, updateArgumentValue, getWidget, getItemsByType, getConfigItem } = useSchemeContext();
+  const { configUtils, schemeUtils } = useSchemeContext();
 
-  const { factory: Widget, formatDisplayedValue } = getWidget(argument.source, argument.type);
+  const { factory: Widget, formatDisplayedValue } = configUtils.getWidget(argument.source, argument.type);
 
   const widgetLiRef = useRef<HTMLDivElement>();
 
@@ -31,14 +31,14 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
   useOutsideClick(widgetLiRef, onOutsideClick);
 
   const onDrop = (item: DragItem) => {
-    replaceArgument(item.item, argument.argId);
+    schemeUtils.replaceArgument(item.item, argument.argId);
   };
 
   const [, dropRef] = useShallowDrop(acceptedDropTypes, onDrop, canDrop);
 
-  const updateArgumentPureValue = (value: string) => updateArgumentValue(value, argument);
+  const updateArgumentPureValue = (value: string) => schemeUtils.updateArgumentValue(value, argument);
 
-  const updateArgumentItem = (selected: ConfigItem) => replaceArgument(selected, argument.argId);
+  const updateArgumentItem = (selected: ConfigItem) => schemeUtils.replaceArgument(selected, argument.argId);
 
   const renderWidgett = (onChange: any, value?: string, items?: ConfigItem[]) => <Widget onChange={onChange} value={value} items={items} />;
 
@@ -60,7 +60,7 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
             onChange={updateArgumentItem}
             renderWidget={renderWidgett}
             onUseAction={clearToggled}
-            items={getItemsByType(argument.source, argument.type)}
+            items={configUtils.getItemsBySourceAndType(argument.source, argument.type)}
           />
         );
     }
@@ -75,7 +75,7 @@ export default function WidgetFactory({ argument, acceptedDropTypes, canDrop }: 
   const renderHeader = () => {
     function getDisplayedValue() {
       if (formatDisplayedValue) {
-        return formatDisplayedValue(argument, getConfigItem(argument.itemId, argument.source));
+        return formatDisplayedValue(argument, configUtils.getConfigItem(argument.itemId, argument.source));
       }
       if (argument.value === 'value') {
         return argument.value;

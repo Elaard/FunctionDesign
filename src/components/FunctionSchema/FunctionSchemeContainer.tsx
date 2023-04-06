@@ -13,17 +13,17 @@ interface FunctionSchemaProps {
 }
 
 export default function FunctionSchemeContainer({ argument }: FunctionSchemaProps) {
-  const { getFunctionArguments, addArgument, addEmptyArgument } = useSchemeContext();
-  const args = getFunctionArguments(argument.argId);
+  const { schemeUtils } = useSchemeContext();
+  const args = schemeUtils.getArgumentsByParentId(argument.argId);
 
   const onDrop = (dropped: DragItem) => {
-    addArgument(dropped.item, argument.argId);
+    schemeUtils.addArgument(dropped.item, argument.argId);
   };
 
   const [, dropRef] = useShallowDrop([argument.type], onDrop);
 
   const createArgument = () => {
-    addEmptyArgument(argument.argId, argument.type);
+    schemeUtils.addEmptyArgument(argument.argId, argument.type);
   };
 
   return (
