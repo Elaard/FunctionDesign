@@ -1,7 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
 import { useContext } from 'react';
-import { useKeyPress } from '../Hooks/useKeyPress';
-import { useSchemeContext } from './SchemeContext';
 
 export interface ToggleContext {
   isToggled: (argumentId: string) => boolean;
@@ -28,22 +26,11 @@ interface ToggleContextProps {
 const ToggleContext = ({ children }: ToggleContextProps) => {
   const [toggledId, setToggledId] = useState<string>('');
 
-  const { schemeUtils } = useSchemeContext();
-
   const clearToggled = useCallback(() => setToggledId(''), []);
 
   const isToggled = useCallback((argumentId: string) => toggledId === argumentId, [toggledId]);
 
   const toggleElement = useCallback((argumentId: string) => setToggledId(argumentId), []);
-
-  const removeToggled = useCallback(() => {
-    if (toggledId) {
-      schemeUtils.removeArgument(toggledId);
-      clearToggled();
-    }
-  }, [schemeUtils.removeArgument, clearToggled, toggledId]);
-
-  useKeyPress('Delete', removeToggled);
 
   return (
     <ToggleProvider.Provider

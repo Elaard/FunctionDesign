@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import './FunctionSchemeContainer.scss';
+import './FunctionScheme.scss';
 import { useSchemeContext } from '../../Context/SchemeContext';
 import Bracket from '../Bracket/Bracket';
 import { useShallowDrop } from '../../Hooks/useShallowDrop';
@@ -12,9 +12,11 @@ interface FunctionSchemaProps {
   argument: SchemeItem;
 }
 
-function FunctionSchemeContainer({ argument }: FunctionSchemaProps) {
-  const { schemeUtils } = useSchemeContext();
+function FunctionScheme({ argument }: FunctionSchemaProps) {
+  const { schemeUtils, configUtils } = useSchemeContext();
   const args = schemeUtils.getArgumentsByParentId(argument.argId);
+
+  const isStrict = configUtils.isStrict(argument.itemId);
 
   const onDrop = (dropped: DragItem) => {
     schemeUtils.addArgument(dropped.item, argument.argId);
@@ -27,13 +29,13 @@ function FunctionSchemeContainer({ argument }: FunctionSchemaProps) {
   };
 
   return (
-    <ul className="function-schema">
+    <ul className="function-scheme">
       <Bracket highlight={false} bracket="(" />
       <FunctionBody args={args} />
-      <AddArgument dropRef={dropRef} onClick={createArgument} />
+      {!isStrict ? <AddArgument dropRef={dropRef} onClick={createArgument} /> : null}
       <Bracket highlight={false} bracket=")" />
     </ul>
   );
 }
 
-export default memo(FunctionSchemeContainer);
+export default memo(FunctionScheme);

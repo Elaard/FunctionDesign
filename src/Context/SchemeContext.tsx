@@ -21,6 +21,7 @@ interface SchemeContextUtils {
 interface ConfigContextUtils {
   isStrict(funcId: string): boolean;
   getWidget(source: string, type: string): Widget;
+  isParentStrict(parentId: string): boolean;
   getConfigItem(itemId: string, source: string): ConfigItem | undefined;
   getFunctionMeta(funcId: string): FuncItemMeta;
   getTypesBySource(source: string): string[];
@@ -45,6 +46,7 @@ const SchemeProvider = React.createContext<SchemeContext>({
   configUtils: {
     isStrict: () => false,
     getWidget: () => undefined as any,
+    isParentStrict: () => false,
     getConfigItem: () => undefined,
     getFunctionMeta: () => undefined as any,
     getTypesBySource: () => [],
@@ -92,11 +94,14 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
   const configUtils: ConfigContextUtils = {
     isStrict: (funcId: string): boolean => ConfigUtils.isStrict(config, funcId),
     getWidget: (source: string, type: string): Widget => ConfigUtils.getWidget(config, source, type),
+    isParentStrict: (parentId: string) => ConfigUtils.isStrict(config, schemeUtils.getArgumentByArgId(parentId)?.itemId ?? ''),
     getConfigItem: (itemId: string, source: string) => ConfigUtils.getConfigItem(config, itemId, source),
     getFunctionMeta: (funcId: string) => ConfigUtils.getFunctionMeta(config, funcId),
     getTypesBySource: (source: string): string[] => ConfigUtils.getTypesBySource(config, source),
     getItemsBySourceAndType: (source: string, type: string) => ConfigUtils.getItemsBySourceAndType(config, source, type),
   };
+
+  console.log(scheme);
 
   return (
     <SchemeProvider.Provider

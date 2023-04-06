@@ -11,17 +11,24 @@ interface WidgetFactoryContainerProps {
   canDrop?: (draggItem: DragItem) => boolean;
 }
 
-function WidgetFactoryContainer(props: WidgetFactoryContainerProps) {
+function WidgetFactoryContainer({ argument, ...rest }: WidgetFactoryContainerProps) {
   const { clearToggled, toggleElement, isToggled } = useToggleContext();
   const { configUtils, schemeUtils } = useSchemeContext();
 
+  const isStrict = configUtils.isStrict(argument.itemId);
+
+  const parentIsStrict = configUtils.isParentStrict(argument.parentId);
+
   return (
     <WidgetFactory
-      {...props}
+      {...rest}
+      argument={argument}
+      getWidget={configUtils.getWidget}
       isToggled={isToggled}
+      canBeDeleted={!parentIsStrict}
       clearToggled={clearToggled}
       toggleElement={toggleElement}
-      getWidget={configUtils.getWidget}
+      removeArgument={schemeUtils.removeArgument}
       replaceArgument={schemeUtils.replaceArgument}
       updateArgumentValue={schemeUtils.updateArgumentValue}
       getConfigItem={configUtils.getConfigItem}

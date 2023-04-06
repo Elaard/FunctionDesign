@@ -3,21 +3,24 @@ import './WidgetFactory.scss';
 import SelectWidgetContainer from './SelectWidgetContainer';
 import { ConfigItem } from '../../Models/ConfigItem';
 import { useOutsideClick } from '../../Hooks/useOutsideClick';
-import FunctionSchemeContainer from '../FunctionSchema/FunctionSchemeContainer';
+import FunctionScheme from '../FunctionSchema/FunctionScheme';
 import { useShallowDrop } from '../../Hooks/useShallowDrop';
 import { DragItem } from '../../Models/DragItem';
 import ValueWidgetContainer from './ValueWidgetContainer';
 import { SchemeItem } from '../../Models/SchemeItem';
 import { Widget } from '../../Models/Widget';
+import { useKeyPress } from '../../Hooks/useKeyPress';
 
 interface WidgetFactoryProps {
   argument: SchemeItem;
   canDrop?: (draggItem: DragItem) => boolean;
   isToggled: (argumentId: string) => boolean;
+  canBeDeleted: boolean;
   toggleElement: (id: string) => void;
   clearToggled: () => void;
   acceptedDropTypes: string[];
   getWidget(source: string, type: string): Widget;
+  removeArgument(argumentId: string): void;
   replaceArgument(argument: ConfigItem, replacedId: string): void;
   updateArgumentValue(value: string, argument: SchemeItem): void;
   getConfigItem(itemId: string, source: string): ConfigItem | undefined;
@@ -27,12 +30,14 @@ interface WidgetFactoryProps {
 function WidgetFactory({
   argument,
   acceptedDropTypes,
+  canBeDeleted,
   canDrop,
   isToggled,
   getWidget,
   clearToggled,
   toggleElement,
   getConfigItem,
+  removeArgument,
   replaceArgument,
   updateArgumentValue,
   getItemsBySourceAndType,
@@ -48,6 +53,15 @@ function WidgetFactory({
       clearToggled();
     }
   };
+
+  const removeToggled = () => {
+    if (showWidget && canBeDeleted) {
+      removeArgument(argument.argId);
+      clearToggled();
+    }
+  };
+
+  useKeyPress('Delete', removeToggled);
 
   useOutsideClick(widgetLiRef, onOutsideClick);
 
@@ -123,7 +137,7 @@ function WidgetFactory({
 
   const renderSchema = () => {
     if (argument.source === 'func') {
-      return <FunctionSchemeContainer argument={argument} />;
+      return <FunctionScheme argument={argument} />;
     }
   };
 
