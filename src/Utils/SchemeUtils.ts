@@ -6,7 +6,7 @@ export interface SchemeUtils {
   addArgument: (argument: ConfigItem, parentId: string, scheme: Scheme) => Scheme;
   removeArgument: (deletedId: string, scheme: Scheme) => Scheme;
   updateArgument(argument: SchemeItem, updated: Partial<ConfigItem>, scheme: Scheme): Scheme;
-  replaceArgument(argument: ConfigItem, scheme: Scheme, replacedId: string): Scheme;
+  replaceArgument(argument: ConfigItem, replacedId: string, scheme: Scheme): Scheme;
   getArgumentByArgId(scheme: Scheme, argId: string): SchemeItem | undefined;
   addEmptyArgument(parentId: string, type: string, scheme: Scheme): Scheme;
   createArgument(argument: Partial<ConfigItem>, parentId: string): SchemeItem;
@@ -82,7 +82,7 @@ function updateArgument(previous: SchemeItem, updated: Partial<ConfigItem>, sche
   return updateSchemeOnMatchingArgId(validScheme, updated, previous.argId);
 }
 
-function replaceArgument(argument: ConfigItem, scheme: Scheme, replacedArgumentId: string): Scheme {
+function replaceArgument(argument: ConfigItem, replacedArgumentId: string, scheme: Scheme): Scheme {
   const oldArgument = getArgumentByArgId(scheme, replacedArgumentId);
 
   if (!oldArgument) {

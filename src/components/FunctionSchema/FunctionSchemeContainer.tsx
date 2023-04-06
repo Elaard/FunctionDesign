@@ -15,20 +15,8 @@ interface FunctionSchemaProps {
 }
 
 export default function FunctionSchemeContainer({ argument }: FunctionSchemaProps) {
-  const { getFunctionArguments, addArgument, addEmptyArgument, getFunctionSchema } = useSchemeContext();
+  const { getFunctionArguments, addArgument, addEmptyArgument } = useSchemeContext();
   const args = getFunctionArguments(argument.argId);
-
-  const functionSchema = getFunctionSchema(argument.id);
-
-  const getArgs = (): SchemeItem[] => {
-    if (args.length) {
-      return args;
-    }
-    if (functionSchema?.meta.scheme.hasStrictScheme) {
-      return functionSchema.meta.scheme.arguments.map((arg) => SchemeUtils.createArgument(arg, argument.argId));
-    }
-    return [];
-  };
 
   const onDrop = (dropped: DragItem) => {
     addArgument(dropped.item, argument.argId);
@@ -43,7 +31,7 @@ export default function FunctionSchemeContainer({ argument }: FunctionSchemaProp
   return (
     <ul className="function-schema">
       <Bracket highlight={false} bracket="(" />
-      <FunctionBody args={getArgs()} />
+      <FunctionBody args={args} />
       <AddArgument dropRef={dropRef} onClick={createArgument} />
       <Bracket highlight={false} bracket=")" />
     </ul>

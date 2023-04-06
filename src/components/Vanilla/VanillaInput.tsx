@@ -7,5 +7,5 @@ interface VanillaInputProps {
 }
 
 export default function VanillaInput({ value, onChange }: VanillaInputProps) {
-  return <input type="number" value={value} onChange={(e) => onChange(e?.target.value)} />;
+  return <input value={value} onChange={(e) => onChange(e?.target.value)} />;
 }

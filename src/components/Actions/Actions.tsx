@@ -6,5 +6,5 @@ interface ActionsProps {
 }
 
 export default function Actions({ visible, children }: ActionsProps) {
-  return <span hidden={!visible}>{children}</span>;
+  return visible ? <span>{children}</span> : null;
 }

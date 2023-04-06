@@ -70,7 +70,7 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
   }
 
   function replaceArgument(argument: ConfigItem, replacedId: string): void {
-    setScheme((prev) => utils.replaceArgument(argument, prev, replacedId));
+    setScheme((prev) => utils.replaceArgument(argument, replacedId, prev));
   }
 
   function updateArgument(updated: Partial<ConfigItem>, argument: SchemeItem) {
@@ -114,6 +114,8 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
   function getFunctionSchema(functionId: string) {
     return config.parts.func.find((fn) => fn.id === functionId);
   }
+
+  console.log(scheme);
 
   return (
     <SchemeProvider.Provider

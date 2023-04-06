@@ -12,7 +12,7 @@ interface ValueWidgetContainerProps {
 }
 
 export default function ValueWidgetContainer({ renderWidget, oldValue, onUseAction, onChange }: ValueWidgetContainerProps) {
-  const [value, setValue] = useState<NullableString>(null);
+  const [value, setValue] = useState<NullableString>('');
 
   useEffect(() => {
     setValue(oldValue);
