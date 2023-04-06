@@ -1,8 +1,6 @@
-import { ConfigItem } from '../Models/ConfigItems';
-import { FuncItem, FuncItemMetaSchemeArg } from '../Models/FuncItem';
+import { ConfigItem, FuncItem, FuncItemMetaSchemeArg } from '../Models/ConfigItem';
 import { Scheme, SchemeItem } from '../Models/SchemeItem';
 import { v4 as uuidv4 } from 'uuid';
-import { argumentUtils } from './ArgumentUtils';
 
 export interface SchemeUtils {
   addArgument: (argument: ConfigItem, parentId: string, scheme: Scheme) => Scheme;
@@ -55,7 +53,7 @@ function createValueArgument(parentId: string, type: string): SchemeItem {
 }
 
 function shouldCreateBasicScheme(argument: FuncItem) {
-  return argumentUtils.whetherSourceIsFunction(argument) && argument.meta?.scheme.hasStrictScheme;
+  return argument.source === 'func' && argument.meta?.scheme.hasStrictScheme;
 }
 
 function createArgumentBasedOnMeta(argument: FuncItemMetaSchemeArg, parentId: string) {

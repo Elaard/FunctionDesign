@@ -1,9 +1,9 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { useContext } from 'react';
 import { useKeyPress } from '../Hooks/useKeyPress';
 import { useSchemeContext } from './SchemeContext';
 
-interface ToggleContext {
+export interface ToggleContext {
   isToggled: (argumentId: string) => boolean;
   toggleElement: (id: string) => void;
   clearToggled: () => void;

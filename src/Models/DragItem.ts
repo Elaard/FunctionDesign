@@ -1,9 +1,7 @@
-import { FieldItem } from './FieldItem';
 import { DragActionType } from './DragActionType';
-import { FuncItem } from './FuncItem';
-import { SimpleItem } from './SimpleItem';
+import { ConfigItem } from './ConfigItem';
 
 export interface DragItem {
-  item: SimpleItem | FieldItem | FuncItem;
+  item: ConfigItem;
   actionType: DragActionType;
 }

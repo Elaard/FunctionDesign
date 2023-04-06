@@ -1,18 +1,10 @@
-import { ConfigItem, ConfigItems } from './ConfigItems';
+import { ConfigItems } from './ConfigItem';
 import { ConfigSources } from './ConfigSource';
-import { SchemeItem } from './SchemeItem';
-import { WidgetProps } from './WidgetProps';
+import { ValueWidgetType } from './Widget';
 
 interface ConfigSettings {
   sources: ConfigSources;
 }
-
-export type Widget = {
-  factory: React.FunctionComponent<WidgetProps>;
-  formatDisplayedValue: (value: SchemeItem, configItem?: ConfigItem) => string;
-};
-
-export type ValueWidgetType = Record<string, Widget>;
 
 type ConfigTypes = {
   [key: string]: ValueWidgetType;

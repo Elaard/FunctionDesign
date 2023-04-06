@@ -1,11 +1,6 @@
 import React from 'react';
-import { NullableString } from '../../Models/BuiltIn';
+import { WidgetProps } from '../../Models/WidgetProps';
 
-interface VanillaInputProps {
-  value: string;
-  onChange: (value: NullableString) => void;
-}
-
-export default function VanillaInput({ value, onChange }: VanillaInputProps) {
+export default function VanillaInput({ value, onChange }: WidgetProps) {
   return <input value={value} onChange={(e) => onChange(e?.target.value)} />;
 }

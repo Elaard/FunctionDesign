@@ -1,5 +1,5 @@
-import SchemeContext, { useSchemeContext } from '../Context/SchemeContext';
-import ToggleContext, { useToggleContext } from '../Context/ToggleContext';
+import { SchemeContext, useSchemeContext } from '../Context/SchemeContext';
+import { ToggleContext, useToggleContext } from '../Context/ToggleContext';
 import { SchemeUtils } from './SchemeUtils';
 
 export interface Contexts {

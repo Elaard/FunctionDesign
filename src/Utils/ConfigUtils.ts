@@ -1,6 +1,6 @@
-import { Config, Widget } from '../Models/Config';
-import { FuncItem, FuncItemMeta } from '../Models/FuncItem';
-import { SimpleItem } from '../Models/SimpleItem';
+import { Config } from '../Models/Config';
+import { SimpleItem, FuncItemMeta, FuncItem } from '../Models/ConfigItem';
+import { Widget } from '../Models/Widget';
 
 export interface ConfigUtils {
   isStrict: (config: Config, funcId: string) => boolean;

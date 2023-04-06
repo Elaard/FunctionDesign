@@ -1,15 +1,14 @@
 import React, { memo, useCallback, useRef } from 'react';
 import './WidgetFactory.scss';
 import SelectWidgetContainer from './SelectWidgetContainer';
-import { ConfigItem } from '../../Models/ConfigItems';
+import { ConfigItem } from '../../Models/ConfigItem';
 import { useOutsideClick } from '../../Hooks/useOutsideClick';
 import FunctionSchemeContainer from '../FunctionSchema/FunctionSchemeContainer';
 import { useShallowDrop } from '../../Hooks/useShallowDrop';
 import { DragItem } from '../../Models/DragItem';
 import ValueWidgetContainer from './ValueWidgetContainer';
-import { argumentUtils } from '../../Utils/ArgumentUtils';
 import { SchemeItem } from '../../Models/SchemeItem';
-import { Widget } from '../../Models/Config';
+import { Widget } from '../../Models/Widget';
 
 interface WidgetFactoryProps {
   argument: SchemeItem;
@@ -123,7 +122,7 @@ function WidgetFactory({
   };
 
   const renderSchema = () => {
-    if (argumentUtils.whetherSourceIsFunction(argument)) {
+    if (argument.source === 'func') {
       return <FunctionSchemeContainer argument={argument} />;
     }
   };

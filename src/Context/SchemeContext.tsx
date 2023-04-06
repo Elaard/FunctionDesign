@@ -1,11 +1,11 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { Scheme, SchemeItem } from '../Models/SchemeItem';
 import { SchemeUtils } from '../Utils/SchemeUtils';
 import { ConfigUtils } from '../Utils/ConfigUtils';
-import { Config, Widget } from '../Models/Config';
-import { ConfigItem } from '../Models/ConfigItems';
-import { FuncItemMeta } from '../Models/FuncItem';
+import { Config } from '../Models/Config';
+import { ConfigItem, FuncItemMeta } from '../Models/ConfigItem';
+import { Widget } from '../Models/Widget';
 
 interface SchemeContextUtils {
   addArgument(argument: ConfigItem, parentId: string): void;
@@ -27,7 +27,7 @@ interface ConfigContextUtils {
   getItemsBySourceAndType(source: string, type: string): ConfigItem[];
 }
 
-interface SchemeContext {
+export interface SchemeContext {
   schemeUtils: SchemeContextUtils;
   configUtils: ConfigContextUtils;
 }
