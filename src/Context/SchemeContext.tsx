@@ -19,6 +19,7 @@ interface SchemeContextUtils {
 }
 
 interface ConfigContextUtils {
+  isStrict(funcId: string): boolean;
   getWidget(source: string, type: string): Widget;
   getConfigItem(itemId: string, source: string): ConfigItem | undefined;
   getFunctionMeta(funcId: string): FuncItemMeta;
@@ -42,6 +43,7 @@ const SchemeProvider = React.createContext<SchemeContext>({
     addEmptyArgument: () => null,
   },
   configUtils: {
+    isStrict: () => false,
     getWidget: () => undefined as any,
     getConfigItem: () => undefined,
     getFunctionMeta: () => undefined as any,
@@ -88,6 +90,7 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
 
   //CONFIG
   const configUtils: ConfigContextUtils = {
+    isStrict: (funcId: string): boolean => ConfigUtils.isStrict(config, funcId),
     getWidget: (source: string, type: string): Widget => ConfigUtils.getWidget(config, source, type),
     getConfigItem: (itemId: string, source: string) => ConfigUtils.getConfigItem(config, itemId, source),
     getFunctionMeta: (funcId: string) => ConfigUtils.getFunctionMeta(config, funcId),
