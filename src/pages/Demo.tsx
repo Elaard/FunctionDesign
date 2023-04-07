@@ -5,14 +5,14 @@ import { Config } from '../Models/Config';
 import { BasicConfig } from '../Utils/BasicConfig';
 
 const basic: Scheme = [
-  {
-    itemId: 'sum',
-    source: 'func',
-    value: 'SUM',
-    type: 'number',
-    argId: 'root',
-    parentId: '',
-  },
+  // {
+  //   itemId: 'sum',
+  //   source: 'func',
+  //   value: 'SUM',
+  //   type: 'number',
+  //   argId: 'root',
+  //   parentId: '',
+  // },
 ];
 
 const Demo = () => {

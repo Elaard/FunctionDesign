@@ -3,6 +3,7 @@ import { Scheme, SchemeItem } from '../Models/SchemeItem';
 import { v4 as uuidv4 } from 'uuid';
 
 export interface SchemeUtils {
+  addRoot: (argument: FuncItem) => Scheme;
   addArgument: (argument: ConfigItem, parentId: string, scheme: Scheme) => Scheme;
   removeArgument: (deletedId: string, scheme: Scheme) => Scheme;
   updateArgumentValue(previous: SchemeItem, value: string, scheme: Scheme): Scheme;
@@ -151,7 +152,21 @@ function recalculateSchemeIfNecessary(scheme: Scheme, argument: SchemeItem) {
   return requireRecalculation(argument.source) ? recalculateSchemeByArgId(argument.argId, scheme) : copyScheme(scheme);
 }
 
+function createRootArgument(argument: FuncItem): SchemeItem {
+  return { ...createArgumentBasedOnConfigItem(argument, ''), argId: 'root' };
+}
+
+function addRoot(argument: FuncItem) {
+  const root = createRootArgument(argument);
+  const schemeItems = [root];
+  if (shouldCreateBasicScheme(argument)) {
+    schemeItems.push(...createArgumentsBasedOnMeta(argument, root.argId));
+  }
+  return schemeItems;
+}
+
 export const SchemeUtils: SchemeUtils = {
+  addRoot,
   addArgument,
   removeArgument,
   updateArgumentValue,

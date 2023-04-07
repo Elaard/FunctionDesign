@@ -4,10 +4,11 @@ import { Scheme, SchemeItem } from '../Models/SchemeItem';
 import { SchemeUtils } from '../Utils/SchemeUtils';
 import { ConfigUtils } from '../Utils/ConfigUtils';
 import { Config } from '../Models/Config';
-import { ConfigItem, FuncItemMeta } from '../Models/ConfigItem';
+import { ConfigItem, FuncItem, FuncItemMeta } from '../Models/ConfigItem';
 import { Widget } from '../Models/Widget';
 
 interface SchemeContextUtils {
+  addRoot(argument: FuncItem): void;
   addArgument(argument: ConfigItem, parentId: string): void;
   removeArgument(deletedId: string): void;
   replaceArgument(argument: ConfigItem, replacedId: string): void;
@@ -35,6 +36,7 @@ export interface SchemeContext {
 
 const SchemeProvider = React.createContext<SchemeContext>({
   schemeUtils: {
+    addRoot: () => null,
     addArgument: () => null,
     replaceArgument: () => null,
     removeArgument: () => null,
@@ -80,6 +82,7 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
 
   //SCHEMA
   const schemeUtils: SchemeContextUtils = {
+    addRoot: (argument: FuncItem) => setScheme(SchemeUtils.addRoot(argument)),
     addArgument: (argument: ConfigItem, parentId: string) => setScheme((prev) => SchemeUtils.addArgument(argument, parentId, prev)),
     removeArgument: (deletedId: string) => setScheme((prev) => SchemeUtils.removeArgument(deletedId, prev)),
     replaceArgument: (argument: ConfigItem, replacedId: string) => setScheme((prev) => SchemeUtils.replaceArgument(argument, replacedId, prev)),

@@ -15,8 +15,6 @@ function WidgetFactoryContainer({ argument, ...rest }: WidgetFactoryContainerPro
   const { clearToggled, toggleElement, isToggled } = useToggleContext();
   const { configUtils, schemeUtils } = useSchemeContext();
 
-  const isStrict = configUtils.isStrict(argument.itemId);
-
   const parentIsStrict = configUtils.isParentStrict(argument.parentId);
 
   return (
