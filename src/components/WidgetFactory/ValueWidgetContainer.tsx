@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './ValueWidgetContainer.scss';
-import ValueWidgetIcon from '../Icon/ValueWidgetIcon';
-import Actions from '../Actions/Actions';
 import { useKeyPress } from '../../Hooks/useKeyPress';
 
 interface ValueWidgetContainerProps {
@@ -18,8 +16,6 @@ export default function ValueWidgetContainer({ renderWidget, oldValue = '', onUs
     setValue(oldValue);
   }, [oldValue]);
 
-  const visibleActions = value !== oldValue;
-
   const acceptChange = () => {
     onChange(value);
     onUseAction();
@@ -31,13 +27,5 @@ export default function ValueWidgetContainer({ renderWidget, oldValue = '', onUs
 
   useKeyPress('Escape', rejectChange);
 
-  return (
-    <>
-      {renderWidget(setValue, value)}
-      <Actions visible={visibleActions}>
-        <ValueWidgetIcon src="./reject-icon.png" onClick={rejectChange} />
-        <ValueWidgetIcon src="./accept-icon.png" onClick={acceptChange} />
-      </Actions>
-    </>
-  );
+  return renderWidget(setValue, value);
 }
