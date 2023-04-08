@@ -68,8 +68,8 @@ function createArgumentsBasedOnMeta(argument: FuncItem, parentId: string) {
 function addArgument(argument: ConfigItem, parentId: string, scheme: Scheme): Scheme {
   const schemeItem = createArgumentBasedOnConfigItem(argument, parentId);
   const schemeItems = [schemeItem];
-  if (shouldCreateBasicScheme(argument)) {
-    schemeItems.push(...createArgumentsBasedOnMeta(argument, schemeItem.argId));
+  if (shouldCreateBasicScheme(argument as FuncItem)) {
+    schemeItems.push(...createArgumentsBasedOnMeta(argument as FuncItem, schemeItem.argId));
   }
   return [...scheme, ...schemeItems];
 }
@@ -119,8 +119,8 @@ function replaceArgument(argument: ConfigItem, replacedArgumentId: string, schem
     return updateSelectItem(previousArg, argument);
   }
 
-  if (shouldCreateBasicScheme(argument)) {
-    validScheme.push(...createArgumentsBasedOnMeta(argument, replacedArgument.argId));
+  if (shouldCreateBasicScheme(argument as FuncItem)) {
+    validScheme.push(...createArgumentsBasedOnMeta(argument as FuncItem, replacedArgument.argId));
   }
 
   return updateSchemeOnMatchingArgId(validScheme, replacedArgumentId, updateItem);

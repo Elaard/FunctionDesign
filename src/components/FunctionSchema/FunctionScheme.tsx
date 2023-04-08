@@ -29,7 +29,7 @@ function FunctionScheme({ argument }: FunctionSchemaProps) {
   };
 
   return (
-    <ul className="function-scheme">
+    <ul key={argument.argId + '_fsch'} className="function-scheme">
       <Bracket highlight={false} bracket="(" />
       <FunctionBody args={args} />
       {!isStrict ? <AddArgument dropRef={dropRef} onClick={createArgument} /> : null}
