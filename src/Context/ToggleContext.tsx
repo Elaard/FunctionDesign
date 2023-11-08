@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { useContext } from 'react';
 
 export interface ToggleContext {
@@ -32,17 +32,16 @@ const ToggleContext = ({ children }: ToggleContextProps) => {
 
   const toggleElement = useCallback((argumentId: string) => setToggledId(argumentId), []);
 
-  return (
-    <ToggleProvider.Provider
-      value={{
-        isToggled,
-        clearToggled,
-        toggleElement,
-      }}
-    >
-      {children}
-    </ToggleProvider.Provider>
+  const value = useMemo(
+    () => ({
+      isToggled,
+      clearToggled,
+      toggleElement,
+    }),
+    [isToggled, clearToggled, toggleElement],
   );
+
+  return <ToggleProvider.Provider value={value}>{children}</ToggleProvider.Provider>;
 };
 
-export default memo(ToggleContext);
+export default ToggleContext;

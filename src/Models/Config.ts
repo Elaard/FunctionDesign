@@ -6,13 +6,22 @@ interface ConfigSettings {
   sources: ConfigSources;
 }
 
-type ConfigTypes = {
+type ConfigWidgets = {
   [key: string]: ValueWidgetType;
   value: ValueWidgetType;
 };
 
+type ConfigType = {
+  defaultSource: string;
+};
+
+type ConfigTypes = {
+  [key: string]: ConfigType;
+};
+
 export interface Config {
-  types: ConfigTypes;
   parts: ConfigItems;
+  types?: ConfigTypes;
+  widgets: ConfigWidgets;
   settings: ConfigSettings;
 }

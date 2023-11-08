@@ -1,15 +1,15 @@
-import React, { memo, useCallback, useRef } from 'react';
-import './WidgetFactory.scss';
-import SelectWidgetContainer from './SelectWidgetContainer';
-import { ConfigItem } from '../../Models/ConfigItem';
+import { memo, useCallback } from 'react';
+import { useKeyPress } from '../../Hooks/useKeyPress';
 import { useOutsideClick } from '../../Hooks/useOutsideClick';
-import FunctionScheme from '../FunctionSchema/FunctionScheme';
 import { useShallowDrop } from '../../Hooks/useShallowDrop';
+import { ConfigItem } from '../../Models/ConfigItem';
 import { DragItem } from '../../Models/DragItem';
-import ValueWidgetContainer from './ValueWidgetContainer';
 import { SchemeItem } from '../../Models/SchemeItem';
 import { Widget } from '../../Models/Widget';
-import { useKeyPress } from '../../Hooks/useKeyPress';
+import FunctionScheme from '../FunctionSchema/FunctionScheme';
+import SelectWidgetContainer from './SelectWidgetContainer';
+import ValueWidgetContainer from './ValueWidgetContainer';
+import './WidgetFactory.scss';
 
 interface WidgetFactoryProps {
   argument: SchemeItem;
@@ -44,8 +44,6 @@ function WidgetFactory({
 }: WidgetFactoryProps) {
   const { factory: Widget, formatDisplayedValue } = getWidget(argument.source, argument.type);
 
-  const widgetLiRef = useRef<HTMLLIElement>();
-
   const showWidget = isToggled(argument.argId);
 
   const onOutsideClick = () => {
@@ -63,7 +61,7 @@ function WidgetFactory({
 
   useKeyPress('Delete', removeToggled);
 
-  useOutsideClick(widgetLiRef, onOutsideClick);
+  const ref = useOutsideClick(onOutsideClick);
 
   const onDrop = useCallback(
     (item: DragItem) => {
@@ -79,7 +77,7 @@ function WidgetFactory({
   const updateArgumentItem = useCallback((selected: ConfigItem) => replaceArgument(selected, argument.argId), [replaceArgument, argument?.argId]);
 
   const renderFactoryWidget = useCallback(
-    (onChange: any, value?: string, items?: ConfigItem[]) => <Widget onChange={onChange} value={value} items={items} />,
+    (onChange: (val: string) => void, value?: string, items?: ConfigItem[]) => <Widget onChange={onChange} value={value} items={items} />,
     [Widget],
   );
 
@@ -143,7 +141,7 @@ function WidgetFactory({
 
   return (
     //TODO: fix type
-    <li key={argument.argId + '_wf'} ref={widgetLiRef as any} className="widget-factory">
+    <li key={argument.argId} ref={ref as any} className="widget-factory">
       {renderHeader()}
       {renderWidget()}
       {renderSchema()}
@@ -151,4 +149,4 @@ function WidgetFactory({
   );
 }
 
-export default WidgetFactory;
+export default memo(WidgetFactory);

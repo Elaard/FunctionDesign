@@ -28,6 +28,11 @@ export const BasicConfig: Config = {
     },
   },
   types: {
+    number: {
+      defaultSource: 'value',
+    },
+  },
+  widgets: {
     func: {
       number: {
         factory: VanillaSelect,

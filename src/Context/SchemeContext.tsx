@@ -26,6 +26,7 @@ interface ConfigContextUtils {
   getConfigItem(itemId: string, source: string): ConfigItem | undefined;
   getFunctionMeta(funcId: string): FuncItemMeta;
   getTypesBySource(source: string): string[];
+  getDefaultSourceByType: (type: string) => string;
   getItemsBySourceAndType(source: string, type: string): ConfigItem[];
 }
 
@@ -34,32 +35,16 @@ export interface SchemeContext {
   configUtils: ConfigContextUtils;
 }
 
-const SchemeProvider = React.createContext<SchemeContext>({
-  schemeUtils: {
-    addRoot: () => null,
-    addArgument: () => null,
-    replaceArgument: () => null,
-    removeArgument: () => null,
-    updateArgumentValue: () => null,
-    getArgumentsByParentId: () => [],
-    getArgumentByArgId: () => undefined,
-    addEmptyArgument: () => null,
-  },
-  configUtils: {
-    isStrict: () => false,
-    getWidget: () => undefined as any,
-    isParentStrict: () => false,
-    getConfigItem: () => undefined,
-    getFunctionMeta: () => undefined as any,
-    getTypesBySource: () => [],
-    getItemsBySourceAndType: () => [],
-  },
-});
+const SchemeProvider = React.createContext<SchemeContext | null>(null);
 
 SchemeProvider.displayName = 'SchemeContextProvider';
 
 export function useSchemeContext() {
-  return useContext(SchemeProvider);
+  const context = useContext(SchemeProvider);
+  if (!context) {
+    throw new Error('no provider');
+  }
+  return context;
 }
 
 interface SchemeContextProps {
@@ -101,10 +86,9 @@ const SchemeContext = ({ children, config, providedSchema, onChange }: SchemeCon
     getConfigItem: (itemId: string, source: string) => ConfigUtils.getConfigItem(config, itemId, source),
     getFunctionMeta: (funcId: string) => ConfigUtils.getFunctionMeta(config, funcId),
     getTypesBySource: (source: string): string[] => ConfigUtils.getTypesBySource(config, source),
+    getDefaultSourceByType: (type: string): string => ConfigUtils.getDefaultSourceByType(config, type),
     getItemsBySourceAndType: (source: string, type: string) => ConfigUtils.getItemsBySourceAndType(config, source, type),
   };
-
-  console.log(scheme);
 
   return (
     <SchemeProvider.Provider

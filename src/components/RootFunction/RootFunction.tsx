@@ -16,7 +16,14 @@ export default function RootFunction() {
 
   const acceptedDropTypes = configUtils.getTypesBySource('func');
 
-  const onAddRoot = () => {};
+  const onAddRoot = () => {
+    const root = {
+      id: '',
+      type: '',
+      source: 'func',
+    };
+    schemeUtils.addRoot(root as FuncItem);
+  };
 
   const onDrop = (droppedItem: DragItem) => {
     schemeUtils.addRoot(droppedItem.item as FuncItem);

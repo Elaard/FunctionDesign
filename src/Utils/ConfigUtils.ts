@@ -8,20 +8,38 @@ export interface ConfigUtils {
   getConfigItem: (config: Config, itemId: string, source: string) => SimpleItem | undefined;
   getFunctionMeta: (config: Config, funcId: string) => FuncItemMeta;
   getTypesBySource(config: Config, source: string): string[];
+  getDefaultSourceByType: (config: Config, type: string) => string;
   getItemsBySourceAndType(config: Config, source: string, type: string): SimpleItem[];
 }
 
 const isStrict = (config: Config, funcId: string) => !!(getConfigItem(config, funcId, 'func') as FuncItem)?.meta?.scheme.hasStrictScheme;
 
 function getWidget(config: Config, source: string, type: string): Widget {
-  const widget = config.types[source][type];
+  const widget = config.widgets[source][type];
 
   if (!widget) {
-    throw new Error('no matching widget');
+    throw new Error(`You are missing widget for source: ${source}, type: ${type}`);
   }
 
   return widget;
 }
+
+const getDefaultSourceByType = (config: Config, type: string) => {
+  const configTypes = config.types;
+  let defaultSource = configTypes && configTypes[type]?.defaultSource;
+  if (!defaultSource) {
+    for (const source in config.widgets) {
+      if (!config.widgets[source][type]) {
+        defaultSource = source;
+        break;
+      }
+    }
+  }
+  if (!defaultSource) {
+    throw new Error(`You have not provided source for type: ${type}`);
+  }
+  return defaultSource;
+};
 
 const getTypesBySource = (config: Config, source: string): string[] => [...new Set(config.parts[source].map((x) => x.type))];
 
@@ -38,5 +56,6 @@ export const ConfigUtils: ConfigUtils = {
   getConfigItem,
   getFunctionMeta,
   getTypesBySource,
+  getDefaultSourceByType,
   getItemsBySourceAndType,
 };

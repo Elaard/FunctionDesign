@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-export function useOutsideClick(ref: React.MutableRefObject<any>, action: () => void) {
+export function useOutsideClick<T>(action: () => void) {
+  const ref = useRef<T>();
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (ref.current && !ref.current.contains(event.target)) {
@@ -12,4 +13,5 @@ export function useOutsideClick(ref: React.MutableRefObject<any>, action: () => 
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [action, ref]);
+  return ref;
 }

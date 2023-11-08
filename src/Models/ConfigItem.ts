@@ -8,7 +8,7 @@ export interface SimpleItem {
 
 export interface FuncItemMetaSchemeArg {
   type: string;
-  source: string;
+  source?: string;
 }
 
 export interface FuncItemMetaScheme {
@@ -21,7 +21,7 @@ export interface FuncItemMeta {
 }
 
 export interface FuncItem extends SimpleItem {
-  meta?: FuncItemMeta;
+  meta: FuncItemMeta;
 }
 
 export type FieldItem = SimpleItem;
