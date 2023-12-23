@@ -42,7 +42,7 @@ SchemeProvider.displayName = 'SchemeContextProvider';
 export function useSchemeContext() {
   const context = useContext(SchemeProvider);
   if (!context) {
-    throw new Error('no provider');
+    throw new Error('no scheme provider');
   }
   return context;
 }

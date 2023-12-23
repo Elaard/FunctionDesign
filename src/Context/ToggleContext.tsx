@@ -7,16 +7,16 @@ export interface ToggleContext {
   clearToggled: () => void;
 }
 
-const ToggleProvider = React.createContext<ToggleContext>({
-  isToggled: () => false,
-  toggleElement: () => null,
-  clearToggled: () => null,
-});
+const ToggleProvider = React.createContext<ToggleContext | null>(null);
 
 ToggleProvider.displayName = 'ToggleContextProvider';
 
 export function useToggleContext() {
-  return useContext(ToggleProvider);
+  const context = useContext(ToggleProvider);
+  if (!context) {
+    throw new Error('no toggle provider');
+  }
+  return context;
 }
 
 interface ToggleContextProps {
